@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<TestSet name="Working Set">
+  <TestRun test="MyTest" instance="Normal">
+</MyTest>
+
+<TestSet name="Nightly Runs">
+  <TestRun test="MyTest" instance="Min">
+  <TestRun test="MyTest" instance="Normal">
+  <TestRun test="MyTest" instance="Max">
+</MyTest>
