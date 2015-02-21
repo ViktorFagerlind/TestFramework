@@ -1,3 +1,4 @@
 *.pyc
 *.rslt
 *.log
+QtProject/*
