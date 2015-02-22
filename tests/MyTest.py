@@ -30,7 +30,5 @@ class MyTest (Test):
     val = 120
     self.checkEqual ("Power is correct", "W", val, 120)
         
-t = MyTest ()
-t.run ()
 
 
