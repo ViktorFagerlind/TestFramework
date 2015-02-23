@@ -1,9 +1,9 @@
 from Log  import Log
 from Test import Test
 
-class MyTest (Test):
+class TestA (Test):
   def __init__ (self):
-    Test.__init__(self, "My Test")
+    Test.__init__(self, "Test A")
            
   def runSequence (self):
     self.initCriteria (["Check file",

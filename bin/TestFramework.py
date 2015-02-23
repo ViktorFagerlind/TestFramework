@@ -10,8 +10,8 @@ class TestCollection ():
   def __init__ (self):
     self.tests = {}
     
-  def addTest (self, name, test):
-    self.tests[name] = test
+  def addTest (self, name, testClass):
+    self.tests[name] = testClass
     
   def getTest (self, name):
     return self.tests[name]
@@ -19,7 +19,7 @@ class TestCollection ():
   def runTest (self, name):
     testClass = self.getTest (name)
     testInstance = testClass ()
-    print ("Starting " + testInstance.name)
+    print ("Starting " + name)
     testInstance.run ()
 
 class ControlMainWindow (QtGui.QMainWindow):
@@ -45,21 +45,23 @@ class ControlMainWindow (QtGui.QMainWindow):
     for fn in fileNames:
       splitName = fn.split('\\')
       fileName = splitName[len (splitName)-1]
-      name = fileName[0:(len (fileName)-3)]
-      self.__appendTest__ (name)
+      testClassName = fileName[0:(len (fileName)-3)]
+      self.__appendTest__ (testClassName)
       
      
 #    modulist.append(getattr(__import__(fl[i]),fl[i]))
 #    adapters.append(modulist[i]())
       
     
-  def __appendTest__ (self, testName):
-    item = QtGui.QStandardItem (testName)
-    self.model.appendRow (item)
-    
-    testModule = __import__ (testName)
-    testClass = getattr (testModule, testName)
+  def __appendTest__ (self, testClassName):
+    testModule = __import__ (testClassName)
+    testClass = getattr (testModule, testClassName)
+    testInstance = testClass ()
+    testName = testInstance.name
     self.testCollection.addTest (testName, testClass)
+    
+    item = QtGui.QStandardItem (testName)
+    self.model.appendRow (item)    
     
   @staticmethod
   def Quit ():
