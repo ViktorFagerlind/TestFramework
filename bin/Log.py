@@ -3,8 +3,6 @@ import sys
 
 class Settings:
   resultFolder = "../results/"
-  
-
 
 class Log:
   noBefore   = 5
@@ -12,7 +10,12 @@ class Log:
   filler     = '='
   fileLock   = threading.Lock ()
   currentFile = None
+  logFunction = None
 
+  @staticmethod
+  def setLoggingFunction (logFun):
+    Log.logFunction = logFun
+  
   @staticmethod
   def startFileLogging (name):
     Log.fileLock.acquire ()
@@ -40,7 +43,10 @@ class Log:
   
   @staticmethod
   def put (text):
-    sys.stdout.write (text + "\n")
+    if (Log.logFunction == None):
+      sys.stdout.write (text + "\n")
+    else:
+      Log.logFunction (text)
     
     Log.fileLock.acquire ()
     if (Log.currentFile != None):

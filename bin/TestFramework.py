@@ -1,6 +1,7 @@
 import sys
 import glob
 
+from Log import Log
 from PySide import QtCore, QtGui
 from MainWindow import Ui_MainWindow
 
@@ -33,9 +34,13 @@ class ControlMainWindow (QtGui.QMainWindow):
     self.ui.actionStart.triggered.connect (self.Start)
     self.ui.actionAbort.triggered.connect (ControlMainWindow.Abort)
     
+    # Init log list view
+    self.modelLog = QtGui.QStandardItemModel (self.ui.listViewLog)
+    self.ui.listViewLog.setModel (self.modelLog)
+    
     # Init test list view
-    self.model = QtGui.QStandardItemModel (self.ui.listViewTests)
-    self.ui.listViewTests.setModel (self.model)
+    self.modelTests = QtGui.QStandardItemModel (self.ui.listViewTests)
+    self.ui.listViewTests.setModel (self.modelTests)
     
     self.testCollection = TestCollection ()
 
@@ -46,12 +51,11 @@ class ControlMainWindow (QtGui.QMainWindow):
       splitName = fn.split('\\')
       fileName = splitName[len (splitName)-1]
       testClassName = fileName[0:(len (fileName)-3)]
-      self.__appendTest__ (testClassName)
+      self.__appendTest__ (testClassName)      
       
-     
-#    modulist.append(getattr(__import__(fl[i]),fl[i]))
-#    adapters.append(modulist[i]())
-      
+    # Init log
+    Log.setLoggingFunction (self.appendLogLine)
+    Log.put ("Ready!")
     
   def __appendTest__ (self, testClassName):
     testModule = __import__ (testClassName)
@@ -61,11 +65,17 @@ class ControlMainWindow (QtGui.QMainWindow):
     self.testCollection.addTest (testName, testClass)
     
     item = QtGui.QStandardItem (testName)
-    self.model.appendRow (item)    
+    self.modelTests.appendRow (item)  
+
+  def appendLogLine (self, text):
+#    font = QtGui.QFont('Courier New', 9, QtGui.QFont.Light)
+    item = QtGui.QStandardItem (text)
+#    item.setFont (font)
+    self.modelLog.appendRow (item)
     
   @staticmethod
   def Quit ():
-    QtGui.qApp.closeAllWindows()
+    QtGui.qApp.closeAllWindows ()
   
   #@staticmethod
   def Start (self):
