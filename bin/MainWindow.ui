@@ -44,7 +44,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTabWidget" name="tabWidget">
+           <widget class="QTabWidget" name="tabWidgetTest">
             <property name="currentIndex">
              <number>0</number>
             </property>
@@ -85,7 +85,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTabWidget" name="tabWidget_2">
+           <widget class="QTabWidget" name="tabWidgetLog">
             <property name="currentIndex">
              <number>0</number>
             </property>

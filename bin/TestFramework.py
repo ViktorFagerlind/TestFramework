@@ -10,7 +10,7 @@ from MainWindow import Ui_MainWindow
 class TestCollection ():
   def __init__ (self):
     self.tests = {}
-    
+
   def addTest (self, name, testClass):
     self.tests[name] = testClass
     
@@ -33,7 +33,7 @@ class ControlMainWindow (QtGui.QMainWindow):
     self.ui.actionQuit.triggered.connect  (ControlMainWindow.Quit)
     self.ui.actionStart.triggered.connect (self.Start)
     self.ui.actionAbort.triggered.connect (ControlMainWindow.Abort)
-    
+
     # Init log list view
     self.modelLog = QtGui.QStandardItemModel (self.ui.listViewLog)
     self.ui.listViewLog.setModel (self.modelLog)
