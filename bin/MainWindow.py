@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sat Feb 28 16:48:51 2015
+# Created: Sun Mar 01 18:57:58 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -42,19 +42,6 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.labelTests)
         self.tabWidgetTest = QtGui.QTabWidget(self.layoutWidget_2)
         self.tabWidgetTest.setObjectName("tabWidgetTest")
-        self.tab_1 = QtGui.QWidget()
-        self.tab_1.setObjectName("tab_1")
-        self.horizontalLayout_2 = QtGui.QHBoxLayout(self.tab_1)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.listViewTests = QtGui.QListView(self.tab_1)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.listViewTests.sizePolicy().hasHeightForWidth())
-        self.listViewTests.setSizePolicy(sizePolicy)
-        self.listViewTests.setObjectName("listViewTests")
-        self.horizontalLayout_2.addWidget(self.listViewTests)
-        self.tabWidgetTest.addTab(self.tab_1, "")
         self.verticalLayout.addWidget(self.tabWidgetTest)
         self.layoutWidget_3 = QtGui.QWidget(self.splitter_2)
         self.layoutWidget_3.setObjectName("layoutWidget_3")
@@ -137,7 +124,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionAbort)
 
         self.retranslateUi(MainWindow)
-        self.tabWidgetTest.setCurrentIndex(0)
+        self.tabWidgetTest.setCurrentIndex(-1)
         self.tabWidgetLog.setCurrentIndex(0)
         QtCore.QObject.connect(self.quitButton, QtCore.SIGNAL("clicked()"), self.actionQuit.trigger)
         QtCore.QObject.connect(self.startButton, QtCore.SIGNAL("clicked()"), self.actionStart.trigger)
@@ -147,7 +134,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
         self.labelTests.setText(QtGui.QApplication.translate("MainWindow", "Test Collections", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidgetTest.setTabText(self.tabWidgetTest.indexOf(self.tab_1), QtGui.QApplication.translate("MainWindow", "All Tests", None, QtGui.QApplication.UnicodeUTF8))
         self.labelLog.setText(QtGui.QApplication.translate("MainWindow", "Logs", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidgetLog.setTabText(self.tabWidgetLog.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "Main Log", None, QtGui.QApplication.UnicodeUTF8))
         self.quitButton.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))

@@ -3,6 +3,7 @@ import sys
 
 class Settings:
   resultFolder = "../results/"
+  testPath = "../tests/"
 
 class Log:
   noBefore   = 5
