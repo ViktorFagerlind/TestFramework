@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
 
-<TestSet name="Working Set">
-  <TestRun test="MyTest" instance="Normal">
-</MyTest>
+<TestData>
+    <TestSet name="Working Set">
+      <TestRun test="Test A" instance="Normal"/>
+    </TestSet>
 
-<TestSet name="Nightly Runs">
-  <TestRun test="MyTest" instance="Min">
-  <TestRun test="MyTest" instance="Normal">
-  <TestRun test="MyTest" instance="Max">
-</MyTest>
+    <TestSet name="Nightly Runs">
+      <TestRun test="Test B" instance="Min"/>
+      <TestRun test="Test C" instance="Normal"/>
+      <TestRun test="Test D" instance="Max"/>
+    </TestSet>
+</TestData>

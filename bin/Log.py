@@ -4,6 +4,7 @@ import sys
 class Settings:
   resultFolder = "../results/"
   testPath = "../tests/"
+  inputPath = "../input/"
 
 class Log:
   noBefore   = 5

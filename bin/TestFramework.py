@@ -18,12 +18,12 @@ class ControlMainWindow (QtGui.QMainWindow):
     self.modelLog = QtGui.QStandardItemModel (self.ui.listViewLog)
     self.ui.listViewLog.setModel (self.modelLog)
     
-    # Init TestManager
-    self.TestManager = TestManager (self.ui.tabWidgetTest, self.ui.actionStart, self.ui.actionAbort)
-
     # Init log
     Log.setLoggingFunction (self.appendLogLine)
     Log.put ("Ready!")
+
+    # Init TestManager
+    self.TestManager = TestManager (self.ui.tabWidgetTest, self.ui.actionStart, self.ui.actionAbort)
 
   def appendLogLine (self, text):
 #    font = QtGui.QFont('Courier New', 9, QtGui.QFont.Light)
