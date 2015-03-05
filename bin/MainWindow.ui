@@ -70,33 +70,8 @@
           <item>
            <widget class="QTabWidget" name="tabWidgetLog">
             <property name="currentIndex">
-             <number>0</number>
+             <number>-1</number>
             </property>
-            <widget class="QWidget" name="tab">
-             <attribute name="title">
-              <string>Main Log</string>
-             </attribute>
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <item>
-               <widget class="QListView" name="listViewLog">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>Courier New</family>
-                 </font>
-                </property>
-                <property name="movement">
-                 <enum>QListView::Free</enum>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
            </widget>
           </item>
          </layout>

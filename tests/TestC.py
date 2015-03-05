@@ -6,7 +6,7 @@ class TestC (Test):
     Test.__init__(self, "Test C")
            
   def runSequence (self):
-    Test.printSubstep ("Sub test 1")
+    self.printSubstep ("Sub test 1")
         
 
 

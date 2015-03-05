@@ -1,7 +1,7 @@
 import datetime
 import time
 
-from Log 		    import Log
+from Log 		    import Log, LogManager
 from TestResult import TestResult
 from TestResult import Criteria
 
@@ -18,31 +18,31 @@ class Test:
     self.ongoingResult.initCriteria (criteriaNames)
   
   def check (self, criteriaName, text, success):
-    self.ongoingResult.addEvaluation (criteriaName, text, success, time.time () - self.startTime)
+    self.ongoingResult.addEvaluation (criteriaName, text, success, time.time () - self.startTime, self.log)
 
   def printStart (self):
-    Log.largeHeading (self.name)
-    Log.put ("\n")
+    self.log.largeHeading (self.name)
+    self.log.put ("\n")
 
-  @staticmethod
-  def printSubstep (name):
-    Log.put ("\n")
-    Log.mediumHeading (name)
+  def printSubstep (self, name):
+    self.log.put ("\n")
+    self.log.mediumHeading (name)
 
   def run (self):
     self.startTime = time.time ()
     timeName = (self.name + " - " + str (datetime.datetime.now())).replace (':','.')
 
-    Log.startFileLogging (timeName)
+    self.log = LogManager.addLog (self.name)
+    self.log.startFileLogging (timeName)
     self.ongoingResult = TestResult (timeName)
     self.printStart ()
     self.runSequence ()
     
-    Log.mediumHeading (self.name + " done!")
+    self.log.mediumHeading (self.name + " done!")
 
     self.ongoingResult.saveToFile ()
-    self.ongoingResult.log ()
+    self.ongoingResult.log (self.log)
     
-    Log.stopFileLogging ()
+    self.log.stopFileLogging ()
 
 

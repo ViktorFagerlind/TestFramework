@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Mon Mar 02 23:25:21 2015
+# Created: Thu Mar 05 21:41:25 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -58,23 +58,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.labelLog)
         self.tabWidgetLog = QtGui.QTabWidget(self.layoutWidget_3)
         self.tabWidgetLog.setObjectName("tabWidgetLog")
-        self.tab = QtGui.QWidget()
-        self.tab.setObjectName("tab")
-        self.verticalLayout_4 = QtGui.QVBoxLayout(self.tab)
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.listViewLog = QtGui.QListView(self.tab)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.listViewLog.sizePolicy().hasHeightForWidth())
-        self.listViewLog.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setFamily("Courier New")
-        self.listViewLog.setFont(font)
-        self.listViewLog.setMovement(QtGui.QListView.Free)
-        self.listViewLog.setObjectName("listViewLog")
-        self.verticalLayout_4.addWidget(self.listViewLog)
-        self.tabWidgetLog.addTab(self.tab, "")
         self.verticalLayout_2.addWidget(self.tabWidgetLog)
         self.verticalLayout_3.addWidget(self.splitter_2)
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -125,7 +108,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidgetTest.setCurrentIndex(-1)
-        self.tabWidgetLog.setCurrentIndex(0)
+        self.tabWidgetLog.setCurrentIndex(-1)
         QtCore.QObject.connect(self.quitButton, QtCore.SIGNAL("clicked()"), self.actionQuit.trigger)
         QtCore.QObject.connect(self.startButton, QtCore.SIGNAL("clicked()"), self.actionStart.trigger)
         QtCore.QObject.connect(self.abortButton, QtCore.SIGNAL("clicked()"), self.actionAbort.trigger)
@@ -135,7 +118,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
         self.labelTests.setText(QtGui.QApplication.translate("MainWindow", "Test Collections", None, QtGui.QApplication.UnicodeUTF8))
         self.labelLog.setText(QtGui.QApplication.translate("MainWindow", "Logs", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidgetLog.setTabText(self.tabWidgetLog.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "Main Log", None, QtGui.QApplication.UnicodeUTF8))
         self.quitButton.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.startButton.setText(QtGui.QApplication.translate("MainWindow", "Start", None, QtGui.QApplication.UnicodeUTF8))
         self.abortButton.setText(QtGui.QApplication.translate("MainWindow", "Abort", None, QtGui.QApplication.UnicodeUTF8))

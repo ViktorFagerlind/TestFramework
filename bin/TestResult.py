@@ -33,7 +33,7 @@ class TestResult:
       
     return pickle.load (file)
   
-  def addEvaluation (self, criteriaName, text, success, time):
+  def addEvaluation (self, criteriaName, text, success, time, log):
     criteria = None
     for c in self.criteria:
       if (c.name == criteriaName):
@@ -44,18 +44,18 @@ class TestResult:
       criteria = Criteria (criteriaName)
       self.criteria.append (criteria)
       
-    criteria.evaluate (text, success, time)
+    criteria.evaluate (text, success, time, log)
 
-  def log (self):
-    Log.mediumHeading ("Result for " + self.name)
+  def log (self, log):
+    log.mediumHeading ("Result for " + self.name)
 
     allSuccess = True;
     for c in self.criteria:
-        c.printResult ()
+        c.printResult (log)
         if not c.isSuccess():
             allSuccess = False    
     
-    Log.put ("\nTotal test result: " + Log.getSuccessFailed (allSuccess))
+    log.put ("\nTotal test result: " + Log.getSuccessFailed (allSuccess))
 
 class Criteria:
   def __init__ (self, name):
@@ -63,11 +63,11 @@ class Criteria:
     self.evaluations = [];
     self.success   = False;
 
-  def evaluate (self, text, success, time):
+  def evaluate (self, text, success, time, log):
     self.evaluations.append (CriteriaEval (time, text, success))
     
-    Log.smallHeading ("Criteria: " + self.name)
-    Log.put (text + ": " + Log.getSuccessFailed (success) + "\n")
+    log.smallHeading ("Criteria: " + self.name)
+    log.put (text + ": " + Log.getSuccessFailed (success) + "\n")
             
   def getResult (self):
     if (not self.isEvaluated ()):
@@ -88,12 +88,12 @@ class Criteria:
     
     return True;
 
-  def printResult (self):
-    Log.put (Log.extend (self.name + ": ", 30, " ") + self.getResult ())
+  def printResult (self, log):
+    log.put (Log.extend (self.name + ": ", 30, " ") + self.getResult ())
     for e in self.evaluations:
-      Log.put (Log.extend ("  " + e.text, 30, " ") + Log.getSuccessFailed (e.success) + " (%.1f" % (e.time * 1000) + "ms)")
+      log.put (Log.extend ("  " + e.text, 30, " ") + Log.getSuccessFailed (e.success) + " (%.1f" % (e.time * 1000) + "ms)")
       
-    Log.put ("")
+    log.put ("")
       
 
 class CriteriaEval:

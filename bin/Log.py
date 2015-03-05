@@ -1,6 +1,8 @@
 import threading
 import sys
 
+from PySide import QtGui
+
 class Settings:
   resultFolder = "../results/"
   testPath = "../tests/"
@@ -10,75 +12,80 @@ class Log:
   noBefore   = 5
   lineLength = 80
   filler     = '='
-  fileLock   = threading.Lock ()
-  currentFile = None
-  logFunction = None
 
-  @staticmethod
-  def setLoggingFunction (logFun):
-    Log.logFunction = logFun
-  
-  @staticmethod
-  def startFileLogging (name):
-    Log.fileLock.acquire ()
+  mainLog = None
+
+  def __init__ (self, logFunction, isMain, listView):
+    self.listView = listView
+    self.modelLog = QtGui.QStandardItemModel (self.listView)
+    self.listView.setModel (self.modelLog)
+
+    self.fileLock = threading.Lock ()
+
+    if isMain:
+      Log.mainLog = self
+
+    self.currentFile = None
+
+  def startFileLogging (self, name):
+    self.fileLock.acquire ()
     
     filepath = Settings.resultFolder + name + ".log"
     
-    if (Log.currentFile != None):
+    if (self.currentFile != None):
       print ("Failed to open " + filepath + "- log file already open")
     else: 
       try:
-        Log.currentFile = open (filepath,'w')     
+        self.currentFile = open (filepath,'w')     
       except:
         print ("Failed to open " + filepath)
-        Log.currentFile = None
+        self.currentFile = None
     
-    Log.fileLock.release ()
+    self.fileLock.release ()
   
-  @staticmethod
-  def stopFileLogging ():
-    #print ("current file: " + str (Log.currentFile))
-    Log.fileLock.acquire ()
-    Log.currentFile.close ()
-    Log.currentFile = None
-    Log.fileLock.release ()
+  def stopFileLogging (self):
+    #print (self, "current file: " + str (self, self.currentFile))
+    self.fileLock.acquire ()
+    self.currentFile.close ()
+    self.currentFile = None
+    self.fileLock.release ()
   
-  @staticmethod
-  def put (text):
-    if (Log.logFunction == None):
-      sys.stdout.write (text + "\n")
-    else:
-      Log.logFunction (text)
+  def appendLogLine (self, text):
+    item = QtGui.QStandardItem (text)
+
+    font = QtGui.QFont('Courier New', 9, QtGui.QFont.Light)
+    item.setFont (font)
+
+    self.modelLog.appendRow (item)
+
+  def put (self, text):
+    self.appendLogLine (text)
     
-    Log.fileLock.acquire ()
-    if (Log.currentFile != None):
-      Log.currentFile.write (text + "\n")
-    Log.fileLock.release ()
+    self.fileLock.acquire ()
+    if (self.currentFile != None):
+      self.currentFile.write (text + "\n")
+    self.fileLock.release ()
 
-  @staticmethod
-  def largeHeading (name):
-    Log.lineHeading ("", Log.lineLength)
-    Log.lineHeading (name, Log.lineLength)
-    Log.lineHeading ("", Log.lineLength)
+  def largeHeading (self, name):
+    self.lineHeading ("", self.lineLength)
+    self.lineHeading (name, self.lineLength)
+    self.lineHeading ("", self.lineLength)
 
-  @staticmethod
-  def mediumHeading (name):
-    Log.lineHeading (name, Log.lineLength)
+  def mediumHeading (self, name):
+    self.lineHeading (name, self.lineLength)
    
-  @staticmethod
-  def smallHeading (name):
-    Log.lineHeading (name, Log.lineLength//2 + 10)
+  def smallHeading (self, name):
+    self.lineHeading (name, self.lineLength//2 + 10)
     
-  @staticmethod
-  def lineHeading (name, length):
-    line = "".join (Log.filler for i in range(Log.noBefore)) 
+  def lineHeading (self, name, length):
+    line = "".join (self.filler for i in range(self.noBefore)) 
 
     if (len (name) != 0):
-      line += Log.extend (" " + name + " ", length - len (line), Log.filler)
+      line += self.extend (" " + name + " ", length - len (line), self.filler)
     else:
-      line += Log.extend ("", length - len (line), Log.filler)
+      line += self.extend ("", length - len (line), self.filler)
         
-    Log.put (line)
+    self.put (line)
 
   @staticmethod
   def getSuccessFailed (isSuccess):
@@ -86,10 +93,29 @@ class Log:
       return "Success"
     else:
       return "Failed"
-    
+
   @staticmethod
   def extend (name, length, char):
     line = name
     currentLength = len (line)
     line += "".join (char for i in range(length - currentLength))
     return line    
+
+class LogManager:
+  tabWidget = None
+
+  @staticmethod
+  def setup (tabWidget):
+    LogManager.tabWidget = tabWidget
+    LogManager.__addLog__ (True, "Main")
+
+  @staticmethod
+  def addLog (name):
+    return LogManager.__addLog__ (False, name)
+
+  @staticmethod
+  def __addLog__ (isMain, name):
+    listView = QtGui.QListView (LogManager.tabWidget)
+    LogManager.tabWidget.addTab (listView, name)
+    log = Log (isMain, name, listView)
+    return log
