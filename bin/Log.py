@@ -107,6 +107,9 @@ class LogManager:
   @staticmethod
   def setup (tabWidget):
     LogManager.tabWidget = tabWidget
+    LogManager.tabWidget.setTabsClosable (True)
+    LogManager.tabWidget.tabCloseRequested.connect (LogManager.closeTab)
+
     LogManager.__addLog__ (True, "Main")
 
   @staticmethod
@@ -114,8 +117,17 @@ class LogManager:
     return LogManager.__addLog__ (False, name)
 
   @staticmethod
+  def closeTab (currentIndex):
+    if (currentIndex == 0):
+      Log.mainLog.put ("Cannot close the main log")
+      return
+
+    LogManager.tabWidget.removeTab (currentIndex)
+
+  @staticmethod
   def __addLog__ (isMain, name):
     listView = QtGui.QListView (LogManager.tabWidget)
     LogManager.tabWidget.addTab (listView, name)
-    log = Log (isMain, name, listView)
-    return log
+    LogManager.tabWidget.setCurrentWidget (listView)
+
+    return Log (isMain, name, listView)

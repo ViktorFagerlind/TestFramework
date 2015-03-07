@@ -2,12 +2,17 @@
 
 <TestData>
     <TestSet name="Working Set">
-      <TestRun test="Test A" instance="Normal"/>
+      <TestRun test="Test A" instance="Nominal"/>
     </TestSet>
 
     <TestSet name="Nightly Runs">
+      <TestRun test="Test B" instance="Nominal"/>
+      <TestRun test="Test C" instance="Nominal"/>
+    </TestSet>
+
+    <TestSet name="Extremes">
       <TestRun test="Test B" instance="Min"/>
-      <TestRun test="Test C" instance="Normal"/>
-      <TestRun test="Test D" instance="Max"/>
+      <TestRun test="Test C" instance="Max"/>
+      <TestRun test="Test A" instance="Min"/>
     </TestSet>
 </TestData>

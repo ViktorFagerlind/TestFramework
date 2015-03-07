@@ -2,8 +2,8 @@ from Log  import Log
 from Test import Test
 
 class TestA (Test):
-  def __init__ (self):
-    Test.__init__(self, "Test A")
+  def __init__ (self, instanceName):
+    Test.__init__(self, "Test A", instanceName)
            
   def runSequence (self):
     self.initCriteria (["Check file",

@@ -8,8 +8,12 @@ from TestResult import Criteria
 #class TestSet:
 
 class Test:
-  def __init__ (self, name):
-    self.name     = name
+  def __init__ (self, name, instanceName):
+    self.name         = name
+    self.instanceName = instanceName
+
+  def fullName (self):
+   return self.name + " (" + self.instanceName + ")"
 
   def checkEqual (self, criteriaName, variableName, actualValue, expectedValue):
     self.check (criteriaName, variableName + "=" + str(expectedValue), actualValue == expectedValue)
@@ -21,8 +25,8 @@ class Test:
     self.ongoingResult.addEvaluation (criteriaName, text, success, time.time () - self.startTime, self.log)
 
   def printStart (self):
-    self.log.largeHeading (self.name)
-    self.log.put ("\n")
+    self.log.largeHeading (self.fullName ())
+    self.log.put ("")
 
   def printSubstep (self, name):
     self.log.put ("\n")
@@ -32,7 +36,7 @@ class Test:
     self.startTime = time.time ()
     timeName = (self.name + " - " + str (datetime.datetime.now())).replace (':','.')
 
-    self.log = LogManager.addLog (self.name)
+    self.log = LogManager.addLog (self.fullName ())
     self.log.startFileLogging (timeName)
     self.ongoingResult = TestResult (timeName)
     self.printStart ()

@@ -26,7 +26,7 @@ class TestCollection ():
   def appendTest (testClassName):
     testModule = __import__ (testClassName)
     testClass = getattr (testModule, testClassName)
-    testInstance = testClass ()
+    testInstance = testClass ("")
     testName = testInstance.name
     TestCollection.tests[testName] = testClass
 
@@ -41,10 +41,10 @@ class TestCollection ():
     return names
 
   @staticmethod
-  def runTest (name):
-    testClass = TestCollection.getTestClass (name)
-    testInstance = testClass ()
-    print ("Starting " + name)
+  def runTest (testRun):
+    testClass = TestCollection.getTestClass (testRun.testName)
+    testInstance = testClass (testRun.instanceName)
+    print ("Starting " + testInstance.fullName ())
     testInstance.run ()
 
 # ---- TestRun ---------------------------------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ class TestSet ():
     if (len (selectedItems) != 1):
       Log.put ("No test selected!")
       return
-    TestCollection.runTest (self.testRuns[selectedItems[0].row ()].testName)
+    TestCollection.runTest (self.testRuns[selectedItems[0].row ()])
 
 # ---- TestManager -----------------------------------------------------------------------------------------------------
 
