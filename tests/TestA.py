@@ -14,6 +14,15 @@ class TestA (Test):
   
     self.log.put ("Simple check")
 
+    f = self.getFloatParameter ("Force", 0)
+    s = self.getFloatParameter ("Speed", 0)
+    a = self.getFloatParameter ("Acceleration", 0)
+
+    self.log.put ("Force: " + str (f))
+    self.log.put ("Speed: " + str (s))
+    self.log.put ("Acceleration: " + str (a))
+    self.log.put ("Sum: " + str (f + s + a))
+
     self.printSubstep ("File checking")
     self.check ("Check file", "Correct formatting", True)
     self.check ("Check file", "Correct encoding", True)

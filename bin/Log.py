@@ -15,7 +15,7 @@ class Log:
 
   mainLog = None
 
-  def __init__ (self, logFunction, isMain, listView):
+  def __init__ (self, isMain, listView):
     self.listView = listView
     self.modelLog = QtGui.QStandardItemModel (self.listView)
     self.listView.setModel (self.modelLog)
@@ -125,9 +125,11 @@ class LogManager:
     LogManager.tabWidget.removeTab (currentIndex)
 
   @staticmethod
+
+
   def __addLog__ (isMain, name):
     listView = QtGui.QListView (LogManager.tabWidget)
     LogManager.tabWidget.addTab (listView, name)
     LogManager.tabWidget.setCurrentWidget (listView)
 
-    return Log (isMain, name, listView)
+    return Log (isMain, listView)

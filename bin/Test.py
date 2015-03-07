@@ -1,11 +1,9 @@
 import datetime
 import time
 
-from Log 		    import Log, LogManager
-from TestResult import TestResult
-from TestResult import Criteria
-
-#class TestSet:
+from TestManager  import TestConfiguration
+from Log 		      import Log, LogManager
+from TestResult   import TestResult
 
 class Test:
   def __init__ (self, name, instanceName):
@@ -14,6 +12,12 @@ class Test:
 
   def fullName (self):
    return self.name + " (" + self.instanceName + ")"
+
+  def getFloatParameter (self, name, default):
+    valueString = TestConfiguration.getValueString (self.name, self.instanceName, name)
+    if (valueString == None):
+      return float (default)
+    return float (valueString)
 
   def checkEqual (self, criteriaName, variableName, actualValue, expectedValue):
     self.check (criteriaName, variableName + "=" + str(expectedValue), actualValue == expectedValue)
@@ -25,7 +29,7 @@ class Test:
     self.ongoingResult.addEvaluation (criteriaName, text, success, time.time () - self.startTime, self.log)
 
   def printStart (self):
-    self.log.largeHeading (self.fullName ())
+    self.log.largeHeading (self.timeName)
     self.log.put ("")
 
   def printSubstep (self, name):
@@ -34,11 +38,11 @@ class Test:
 
   def run (self):
     self.startTime = time.time ()
-    timeName = (self.name + " - " + str (datetime.datetime.now())).replace (':','.')
+    self.timeName = (self.fullName () + " - " + str (datetime.datetime.now())).replace (':','.')
 
     self.log = LogManager.addLog (self.fullName ())
-    self.log.startFileLogging (timeName)
-    self.ongoingResult = TestResult (timeName)
+    self.log.startFileLogging (self.timeName)
+    self.ongoingResult = TestResult (self.timeName)
     self.printStart ()
     self.runSequence ()
     

@@ -1,23 +1,64 @@
 <?xml version="1.0"?>
 
-<Test name = "MyTest">
-  <Instance name = "Normal">
-    <Force>         10 </Force>
-    <Speed>         20 </Speed>
-    <Acceleration>  30 </Acceleration>
-  </Instance>
-  
-  <Instance name = "Max">
-    <Force>         100 </Force>
-    <Speed>         200 </Speed>
-    <Acceleration>  300 </Acceleration>
-  </Instance>
-  
-  <Instance name = "Min">
-    <Force>         1 </Force>
-    <Speed>         2 </Speed>
-    <Acceleration>  3 </Acceleration>
-  </Instance>
-</Test>
+<TestConfigurations>
+  <Test name = "Test A">
+    <Instance name = "Nominal">
+      <Force>         10 </Force>
+      <Speed>         20 </Speed>
+      <Acceleration>  30 </Acceleration>
+    </Instance>
 
+    <Instance name = "Max">
+      <Force>         100 </Force>
+      <Speed>         200 </Speed>
+      <Acceleration>  300 </Acceleration>
+    </Instance>
+
+    <Instance name = "Min">
+      <Force>         1 </Force>
+      <Speed>         2 </Speed>
+      <Acceleration>  3 </Acceleration>
+    </Instance>
+  </Test>
+
+  <Test name = "Test B">
+    <Instance name = "Nominal">
+      <Force>         40 </Force>
+      <Speed>         50 </Speed>
+      <Acceleration>  60 </Acceleration>
+    </Instance>
+
+    <Instance name = "Max">
+      <Force>         400 </Force>
+      <Speed>         500 </Speed>
+      <Acceleration>  600 </Acceleration>
+    </Instance>
+
+    <Instance name = "Min">
+      <Force>         4 </Force>
+      <Speed>         5 </Speed>
+      <Acceleration>  6 </Acceleration>
+    </Instance>
+  </Test>
+
+  <Test name = "Test C">
+    <Instance name = "Nominal">
+      <Force>         70 </Force>
+      <Speed>         80 </Speed>
+      <Acceleration>  90 </Acceleration>
+    </Instance>
+
+    <Instance name = "Max">
+      <Force>         700 </Force>
+      <Speed>         800 </Speed>
+      <Acceleration>  900 </Acceleration>
+    </Instance>
+
+    <Instance name = "Min">
+      <Force>         7 </Force>
+      <Speed>         8 </Speed>
+      <Acceleration>  9 </Acceleration>
+    </Instance>
+  </Test>
+</TestConfigurations>
 

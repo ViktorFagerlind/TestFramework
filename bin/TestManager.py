@@ -7,6 +7,40 @@ from Log import Log, Settings
 
 # ---- TestCollection --------------------------------------------------------------------------------------------------
 
+class TestConfiguration ():
+  testConfigXmlRoot = None
+
+  @staticmethod
+  def readConfigurations ():
+    xml = ET.parse (Settings.inputPath + "test_configurations.xml")
+    TestCollection.testConfigXmlRoot = xml.getroot ()
+
+  @staticmethod
+  def getValueString (testName, instanceName, parameterName):
+    param = TestConfiguration.getIntanceRoot (testName, instanceName).find (parameterName)
+    if (param == None):
+      return None
+    return param.text
+
+  @staticmethod
+  def getIntances (testName):
+    instances = []
+    for t in TestCollection.testConfigXmlRoot.findall("Test"):
+      if (t.get ("name") == testName):
+        for i in t.findall("Instance"):
+          instances.append (i.get ("name"))
+    return instances
+
+  @staticmethod
+  def getIntanceRoot (testName, instanceName):
+    for t in TestCollection.testConfigXmlRoot.findall("Test"):
+      if (t.get ("name") == testName):
+        for i in t.findall("Instance"):
+          if (i.get ("name") == instanceName):
+            return i
+    return None
+
+
 class TestCollection ():
   tests = {}
 
@@ -95,15 +129,18 @@ class TestManager:
     actionStart.triggered.connect  (self.Start)
     actionAbort.triggered.connect  (TestManager.Abort)
 
+    # Init Test configurations
+    TestConfiguration.readConfigurations ()
+
     # Init TestCollection
     TestCollection.readTests ()
 
     self.sets = []
-
     #Add TestCollection All Tests
     allTestsNominal = []
     for tn in TestCollection.getTestNames ():
-      allTestsNominal.append (TestRun (tn, "Nominal"))
+      for i in TestConfiguration.getIntances (tn):
+        allTestsNominal.append (TestRun (tn, i))
     self.AddTestSet ("All Tests", allTestsNominal)
 
     # Add test sets according to XML input
