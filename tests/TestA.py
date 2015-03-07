@@ -6,6 +6,7 @@ class TestA (Test):
     Test.__init__(self, "Test A", instanceName)
            
   def runSequence (self):
+    # Optional initialisation if criteria in order to ensure that they are all checked during the test
     self.initCriteria (["Check file",
                         "Check constant",
                         "Check all files present",
@@ -14,14 +15,20 @@ class TestA (Test):
   
     self.log.put ("Simple check")
 
-    f = self.getFloatParameter ("Force", 0)
-    s = self.getFloatParameter ("Speed", 0)
-    a = self.getFloatParameter ("Acceleration", 0)
+    # Get input parameter values
+    f = self.getFloatParameter ("Force")
+    s = self.getFloatParameter ("Speed")
+    a = self.getFloatParameter ("Acceleration")
 
     self.log.put ("Force: " + str (f))
     self.log.put ("Speed: " + str (s))
     self.log.put ("Acceleration: " + str (a))
     self.log.put ("Sum: " + str (f + s + a))
+    self.log.newline ()
+
+    # Read non existent parameter with default value
+    falseName = self.getFloatParameter ("What!?", -10)
+    self.log.put ("Default value: " + str (falseName))
 
     self.printSubstep ("File checking")
     self.check ("Check file", "Correct formatting", True)

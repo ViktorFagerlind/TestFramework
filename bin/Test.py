@@ -13,11 +13,23 @@ class Test:
   def fullName (self):
    return self.name + " (" + self.instanceName + ")"
 
-  def getFloatParameter (self, name, default):
+  def getFloatParameter (self, name, default=0):
     valueString = TestConfiguration.getValueString (self.name, self.instanceName, name)
     if (valueString == None):
       return float (default)
     return float (valueString)
+
+  def getIntParameter (self, name, default=0):
+    valueString = TestConfiguration.getValueString (self.name, self.instanceName, name)
+    if (valueString == None):
+      return int (default)
+    return int (valueString)
+
+  def getLongParameter (self, name, default=0):
+    valueString = TestConfiguration.getValueString (self.name, self.instanceName, name)
+    if (valueString == None):
+      return long (default)
+    return long (valueString)
 
   def checkEqual (self, criteriaName, variableName, actualValue, expectedValue):
     self.check (criteriaName, variableName + "=" + str(expectedValue), actualValue == expectedValue)

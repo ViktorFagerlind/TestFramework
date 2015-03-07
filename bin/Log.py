@@ -58,6 +58,9 @@ class Log:
 
     self.modelLog.appendRow (item)
 
+  def newline (self):
+    self.put ("")
+
   def put (self, text):
     self.appendLogLine (text)
     
