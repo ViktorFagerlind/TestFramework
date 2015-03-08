@@ -45,13 +45,7 @@
             <number>-1</number>
            </property>
           </widget>
-          <widget class="QTreeWidget" name="treeWidget">
-           <column>
-            <property name="text">
-             <string notr="true">1</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="QTreeView" name="TreeViewResults"/>
          </widget>
         </item>
        </layout>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sun Mar 08 14:04:35 2015
+# Created: Sun Mar 08 18:09:45 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,9 +38,8 @@ class Ui_MainWindow(object):
         self.splitter.setObjectName("splitter")
         self.tabWidgetTest = QtGui.QTabWidget(self.splitter)
         self.tabWidgetTest.setObjectName("tabWidgetTest")
-        self.treeWidget = QtGui.QTreeWidget(self.splitter)
-        self.treeWidget.setObjectName("treeWidget")
-        self.treeWidget.headerItem().setText(0, "1")
+        self.TreeViewResults = QtGui.QTreeView(self.splitter)
+        self.TreeViewResults.setObjectName("TreeViewResults")
         self.verticalLayout.addWidget(self.splitter)
         self.layoutWidget_3 = QtGui.QWidget(self.splitter_2)
         self.layoutWidget_3.setObjectName("layoutWidget_3")

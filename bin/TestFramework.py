@@ -1,5 +1,6 @@
 import sys
 
+from ResultTreeModel import ResultTreeModel
 from Log import Log, LogManager
 from TestManager import TestManager
 from PySide import QtGui
@@ -24,6 +25,10 @@ class ControlMainWindow (QtGui.QMainWindow):
                                     self.ui.actionStartSet,
                                     self.ui.actionStartTest,
                                     self.ui.actionAbort)
+
+    # Init test results tree view
+    self.ui.TreeViewResults.setModel (ResultTreeModel ())
+    self.ui.TreeViewResults.setAlternatingRowColors(True)
 
   @staticmethod
   def Quit ():

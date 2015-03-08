@@ -5,6 +5,19 @@ import time
 from Log import Log
 from Log import Settings
 
+class TestManager:
+  setResults = []
+
+#  def setup ():
+#    setResults.append ()
+
+
+class SetResult:
+  def __init__ (self, name):
+    self.name         = name
+    self.testResults  = []
+
+#  addTestResult ()
 
 class TestResult:
   def __init__ (self, name):
@@ -46,16 +59,19 @@ class TestResult:
       
     criteria.evaluate (text, success, time, log)
 
+  def isSuccess (self):
+    for c in self.criteria:
+      if not c.isSuccess():
+        return False
+    return True
+
   def log (self, log):
     log.mediumHeading ("Result for " + self.name)
 
-    allSuccess = True;
     for c in self.criteria:
-        c.printResult (log)
-        if not c.isSuccess():
-            allSuccess = False    
-    
-    log.put ("\nTotal test result: " + Log.getSuccessFailed (allSuccess))
+      c.printResult (log)
+
+    log.put ("\nTotal test result: " + Log.getSuccessFailed (self.isSuccess ()))
 
 class Criteria:
   def __init__ (self, name):
