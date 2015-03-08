@@ -20,7 +20,10 @@ class ControlMainWindow (QtGui.QMainWindow):
     Log.mainLog.put ("Ready!")
 
     # Init TestManager
-    self.TestManager = TestManager (self.ui.tabWidgetTest, self.ui.actionStart, self.ui.actionAbort)
+    self.TestManager = TestManager (self.ui.tabWidgetTest,
+                                    self.ui.actionStartSet,
+                                    self.ui.actionStartTest,
+                                    self.ui.actionAbort)
 
   @staticmethod
   def Quit ():

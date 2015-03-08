@@ -114,6 +114,9 @@ class TestSet ():
       self.modelTests.appendRow (item)
 
   def Start (self):
+    map (TestCollection.runTest, self.testRuns)
+
+  def StartSingleTest (self):
     selectedItems = self.listView.selectedIndexes ()
     if (len (selectedItems) != 1):
       Log.put ("No test selected!")
@@ -123,10 +126,11 @@ class TestSet ():
 # ---- TestManager -----------------------------------------------------------------------------------------------------
 
 class TestManager:
-  def __init__ (self, tabWidget, actionStart, actionAbort):
+  def __init__ (self, tabWidget, actionStartSet, actionStartTest, actionAbort):
     self.tabWidget = tabWidget
 
-    actionStart.triggered.connect  (self.Start)
+    actionStartTest.triggered.connect  (self.StartTest)
+    actionStartSet.triggered.connect  (self.StartSet)
     actionAbort.triggered.connect  (TestManager.Abort)
 
     # Init Test configurations
@@ -161,7 +165,10 @@ class TestManager:
     self.tabWidget.addTab (listView, name)
     self.sets.append (testSet)
 
-  def Start (self):
+  def StartTest (self):
+    self.sets[self.tabWidget.currentIndex ()].StartSingleTest ()
+
+  def StartSet (self):
     self.sets[self.tabWidget.currentIndex ()].Start ()
 
   @staticmethod
