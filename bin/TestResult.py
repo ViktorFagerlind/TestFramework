@@ -17,7 +17,14 @@ class SetResult:
     self.name         = name
     self.testResults  = []
 
-#  addTestResult ()
+  def addTestResult (self, testResult):
+    self.testResults.append (testResult)
+
+  def isSuccess (self):
+    for tr in self.testResults:
+      if not tr.isSuccess ():
+        return False
+    return True
 
 class TestResult:
   def __init__ (self, name):
