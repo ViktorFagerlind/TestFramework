@@ -1,4 +1,4 @@
-from PySide import QtCore
+from PySide import QtCore, QtGui
 from ResultTreeItems import TestResultTreeItem, CriteriaTreeItem, RootTreeItem
 from TestManager import TestCollection
 
@@ -120,10 +120,16 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
 
     # Return the data associated with the column
     if role == QtCore.Qt.DisplayRole:
-        return parent_item.Data(index.column())
+        d,s = parent_item.Data(index.column())
+        return d
     if role == QtCore.Qt.SizeHintRole:
         return QtCore.QSize(20,20)
-
+    if role == QtCore.Qt.DecorationRole:
+        d,s = parent_item.Data(index.column())
+        if s:
+          return QtGui.QIcon("../data/icons/Apply.ico")
+        else:
+          return QtGui.QIcon("../data/icons/Delete.ico")
     # Otherwise return default
     return None
 

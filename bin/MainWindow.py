@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sun Mar 08 18:09:45 2015
+# Created: Tue Mar 10 21:58:21 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -62,12 +62,19 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.startSetButton = QtGui.QPushButton(self.centralwidget)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../data/icons/Play.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.startSetButton.setIcon(icon)
         self.startSetButton.setObjectName("startSetButton")
         self.horizontalLayout.addWidget(self.startSetButton)
         self.startTestButton = QtGui.QPushButton(self.centralwidget)
+        self.startTestButton.setIcon(icon)
         self.startTestButton.setObjectName("startTestButton")
         self.horizontalLayout.addWidget(self.startTestButton)
         self.abortButton = QtGui.QPushButton(self.centralwidget)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("../data/icons/Cancel.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.abortButton.setIcon(icon1)
         self.abortButton.setObjectName("abortButton")
         self.horizontalLayout.addWidget(self.abortButton)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -86,15 +93,19 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.toolBar = QtGui.QToolBar(MainWindow)
+        self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionQuit = QtGui.QAction(MainWindow)
         self.actionQuit.setObjectName("actionQuit")
         self.actionStartTest = QtGui.QAction(MainWindow)
+        self.actionStartTest.setIcon(icon)
         self.actionStartTest.setObjectName("actionStartTest")
         self.actionAbort = QtGui.QAction(MainWindow)
+        self.actionAbort.setIcon(icon1)
         self.actionAbort.setObjectName("actionAbort")
         self.actionStartSet = QtGui.QAction(MainWindow)
+        self.actionStartSet.setIcon(icon)
         self.actionStartSet.setObjectName("actionStartSet")
         self.menuFile.addAction(self.actionQuit)
         self.menuTest.addAction(self.actionStartSet)

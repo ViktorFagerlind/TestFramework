@@ -51,7 +51,7 @@ class TestResultTreeItem(BaseTreeItem):
 
   def Data(self, inColumn):
     if inColumn == 0:
-      return self.testResult.name
+      return self.testResult.name, self.testResult.isSuccess ()
     return ""
 
 class CriteriaTreeItem(BaseTreeItem):
@@ -64,6 +64,6 @@ class CriteriaTreeItem(BaseTreeItem):
 
   def Data(self, inColumn):
     if inColumn == 0:
-        return self.criteria.name
+        return self.criteria.name, self.criteria.isSuccess ()
     return ""
 
