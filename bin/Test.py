@@ -1,9 +1,8 @@
-import datetime
 import time
 
 from TestManager  import TestConfiguration
-from Log 		      import Log, LogManager
-from TestResult   import TestResult
+from Log 		      import Log, LogManager, Settings
+from TestResult   import TestResult, SetResult
 
 class Test:
   def __init__ (self, name, instanceName):
@@ -48,21 +47,19 @@ class Test:
     self.log.put ("\n")
     self.log.mediumHeading (name)
 
-  def run (self):
+  def run (self, setResult):
     self.startTime = time.time ()
-    self.timeName = (self.fullName () + " - " + str (datetime.datetime.now())).replace (':','.')
+    self.timeName = self.fullName () + " - " + Settings.getNowString ()
 
     self.log = LogManager.addLog (self.fullName ())
-    self.log.startFileLogging (self.timeName)
+    self.log.startFileLogging (setResult.getResultPath (), self.timeName)
     self.ongoingResult = TestResult (self.timeName)
+    
     self.printStart ()
     self.runSequence ()
     
     self.log.mediumHeading (self.name + " done!")
-
-    self.ongoingResult.saveToFile ()
     self.ongoingResult.log (self.log)
-    
     self.log.stopFileLogging ()
 
-
+    setResult.addTestResult (self.ongoingResult)
