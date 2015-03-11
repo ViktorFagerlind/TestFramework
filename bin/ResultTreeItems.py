@@ -18,7 +18,10 @@ class BaseTreeItem (object):
   def ColumnCount(self):
     raise Exception("Column Count Not Specified!!")
 
-  def Data(self, inColumn):
+  def Data(self):
+    raise Exception("Data gather method not implemented!")
+
+  def IsSuccess(self):
     raise Exception("Data gather method not implemented!")
 
   def Parent(self):
@@ -36,10 +39,12 @@ class RootTreeItem(BaseTreeItem):
   def ColumnCount(self):
     return 1
 
-  def Data(self, inColumn):
-    if inColumn == 0:
-      return "Test Results"
-    return ""
+  def Data(self):
+    return "Test Results"
+    
+  def IsSuccess(self):
+    return True 
+
 
 class TestResultTreeItem(BaseTreeItem):
   def __init__(self, parent, testResult):
@@ -49,10 +54,11 @@ class TestResultTreeItem(BaseTreeItem):
   def ColumnCount(self):
     return 1
 
-  def Data(self, inColumn):
-    if inColumn == 0:
-      return self.testResult.name, self.testResult.isSuccess ()
-    return ""
+  def Data(self):
+    return self.testResult.name
+
+  def IsSuccess(self):
+    return self.testResult.isSuccess ()
 
 class CriteriaTreeItem(BaseTreeItem):
   def __init__(self, parent, criteria):
@@ -62,8 +68,9 @@ class CriteriaTreeItem(BaseTreeItem):
   def ColumnCount(self):
     return 1
 
-  def Data(self, inColumn):
-    if inColumn == 0:
-        return self.criteria.name, self.criteria.isSuccess ()
-    return ""
+  def Data(self):
+    return self.criteria.name
+
+  def IsSuccess(self):
+    return self.criteria.isSuccess ()
 
