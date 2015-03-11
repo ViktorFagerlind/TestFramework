@@ -10,10 +10,12 @@ class TestResultManager:
   singleRunSet = None
   setResults = []
   
+  @staticmethod
   def setup ():
     TestResultManager.singleRunSet = SetResult ("SingleTestRuns")
     TestResultManager.addSetResult (TestResultManager.singleRunSet)
 
+  @staticmethod
   def addSetResult (setResult):
     TestResultManager.setResults.append (TestResultManager.singleRunSet)
     
