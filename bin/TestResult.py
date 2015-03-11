@@ -1,24 +1,32 @@
-
 import pickle
 import datetime
 import time
+import os
 
 from Log import Log
 from Log import Settings
 
-class TestManager:
+class TestResultManager:
+  singleRunSet = None
   setResults = []
+  
+  def setup ():
+    TestResultManager.singleRunSet = SetResult ("SingleTestRuns")
+    TestResultManager.addSetResult (TestResultManager.singleRunSet)
 
-#  def setup ():
-#    setResults.append ()
-
-
+  def addSetResult (setResult):
+    TestResultManager.setResults.append (TestResultManager.singleRunSet)
+    
 class SetResult:
   def __init__ (self, name):
     self.name         = name
     self.testResults  = []
 
+  def getResultPath (self):
+    return Settings.resultFolder + self.name + "/"
+    
   def addTestResult (self, testResult):
+    testResult.saveToFile (self.getResultPath ())
     self.testResults.append (testResult)
 
   def isSuccess (self):
@@ -36,10 +44,13 @@ class TestResult:
     for cn in criteriaNames:
       self.criteria.append (Criteria (cn))
     
-  def saveToFile (self):
-    filepath = Settings.resultFolder + self.name + ".rslt"
+  def saveToFile (self, directory):
+    if (not os.path.isdir (directory)):
+      os.makedirs (directory)
+    filepath = directory + self.name + ".rslt"
+    
     try:
-      file = open (filepath,'w') 
+      file = open (filepath,'wb') 
       pickle.dump (self, file)
       file.close()
     except:
@@ -125,4 +136,3 @@ class CriteriaEval:
     self.time = time
     self.text = text
     self.success = success;
-  
