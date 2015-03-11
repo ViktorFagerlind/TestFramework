@@ -2,6 +2,7 @@ import sys
 import glob
 import xml.etree.ElementTree as ET
 
+from TestResult import TestResultManager, SetResult
 from PySide import QtGui
 from Log import Log, Settings
 
@@ -71,15 +72,14 @@ class TestCollection ():
   @staticmethod
   def getTestNames ():
     names = TestCollection.tests.keys ()
-    names.sort ()
-    return names
+    return sorted (names)
 
   @staticmethod
-  def runTest (testRun):
+  def runTest (testRun, testResultSet):
     testClass = TestCollection.getTestClass (testRun.testName)
     testInstance = testClass (testRun.instanceName)
     print ("Starting " + testInstance.fullName ())
-    testInstance.run ()
+    testInstance.run (testResultSet)
 
 # ---- TestRun ---------------------------------------------------------------------------------------------------------
 
@@ -114,14 +114,19 @@ class TestSet ():
       self.modelTests.appendRow (item)
 
   def Start (self):
-    map (TestCollection.runTest, self.testRuns)
+    setResult = SetResult (self.name + " - " + Settings.getNowString ())
+  
+    for tr in self.testRuns:
+      TestCollection.runTest (tr, setResult)
+      
+    TestManager
 
   def StartSingleTest (self):
     selectedItems = self.listView.selectedIndexes ()
     if (len (selectedItems) != 1):
-      Log.put ("No test selected!")
+      Log.mainLog.put ("No test selected!")
       return
-    TestCollection.runTest (self.testRuns[selectedItems[0].row ()])
+    TestCollection.runTest (self.testRuns[selectedItems[0].row ()], TestResultManager.singleRunSet)
 
 # ---- TestManager -----------------------------------------------------------------------------------------------------
 
@@ -174,7 +179,3 @@ class TestManager:
   @staticmethod
   def Abort ():
     print ("Abort")
-
-
-
-
