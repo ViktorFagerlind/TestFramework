@@ -1,6 +1,7 @@
 from PySide import QtCore, QtGui
 from ResultTreeItems import TestResultTreeItem, CriteriaTreeItem, RootTreeItem
 from TestManager import TestCollection
+from TestResult import TestResultManager
 
 class ResultTreeModel(QtCore.QAbstractItemModel):
   def __init__(self, inParent = None):
@@ -10,7 +11,7 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
 
     # setup bogus data
     testA = TestCollection.getTestClass ("Test A") ("Nominal")
-    testA.run ();
+    testA.run (TestResultManager.singleRunSet);
     self.SetupModelData (testA.ongoingResult)
 
   def SetupModelData(self, testResult):
