@@ -5,6 +5,9 @@ from TestResult import TestResultManager
 
 class ResultTreeModel(QtCore.QAbstractItemModel):
   def __init__(self, inParent = None):
+    self.successIcon = QtGui.QIcon("../data/icons/Apply.ico")
+    self.failureIcon = QtGui.QIcon("../data/icons/Delete.ico")
+  
     super(ResultTreeModel, self).__init__(inParent)
 
     self.rootItem = RootTreeItem ()
@@ -109,7 +112,7 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
   def data(self, index, role):
     """
     The view calls this to extract data for the row and column associated with the parent object
-    @param parentindex: the parentindex to extract the data from
+    @param index: the parentindex to extract the data from
     @param role: the data accessing role the view requests from the model
     """
 
@@ -119,27 +122,29 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
     # get the item out of the index
     parent_item = index.internalPointer()
 
+    if (index.column() != 0):
+      print ("Only support for one column at the moment");
+      return None
+    
     # Return the data associated with the column
     if role == QtCore.Qt.DisplayRole:
-        d,s = parent_item.Data(index.column())
-        return d
+        return parent_item.Data ()
     if role == QtCore.Qt.SizeHintRole:
         return QtCore.QSize(20,20)
     if role == QtCore.Qt.DecorationRole:
-        d,s = parent_item.Data(index.column())
-        if s:
-          return QtGui.QIcon("../data/icons/Apply.ico")
+        if parent_item.IsSuccess ():
+          return self.successIcon
         else:
-          return QtGui.QIcon("../data/icons/Delete.ico")
+          return self.failureIcon
+          
     # Otherwise return default
     return None
-
 
 
   def headerData(self, column, orientation, role):
     if (orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole):
         try:
-            return self.rootItem.Data(column)
+            return self.rootItem.Data ()
         except IndexError:
             pass
 
