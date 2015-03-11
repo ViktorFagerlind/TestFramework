@@ -1,3 +1,5 @@
+import os
+import datetime
 import threading
 import sys
 
@@ -7,6 +9,11 @@ class Settings:
   resultFolder = "../results/"
   testPath = "../tests/"
   inputPath = "../input/"
+  
+  @staticmethod
+  def getNowString ():
+    return str (datetime.datetime.now()).replace (':','.')
+
 
 class Log:
   noBefore   = 5
@@ -27,10 +34,13 @@ class Log:
 
     self.currentFile = None
 
-  def startFileLogging (self, name):
+  def startFileLogging (self, directory, filename):
     self.fileLock.acquire ()
     
-    filepath = Settings.resultFolder + name + ".log"
+    if (not os.path.isdir (directory)):
+      os.makedirs (directory)
+    
+    filepath = directory + filename + ".log"
     
     if (self.currentFile != None):
       print ("Failed to open " + filepath + "- log file already open")
