@@ -3,6 +3,7 @@ import sys
 from ResultTreeModel import ResultTreeModel
 from Log import Log, LogManager
 from TestManager import TestManager
+from TestResult import TestResultManager
 from PySide import QtGui
 from MainWindow import Ui_MainWindow
 
@@ -19,6 +20,9 @@ class ControlMainWindow (QtGui.QMainWindow):
     LogManager.setup (self.ui.tabWidgetLog)
 
     Log.mainLog.put ("Ready!")
+    
+    # Init TestResultManager
+    TestResultManager.setup ()
 
     # Init TestManager
     self.TestManager = TestManager (self.ui.tabWidgetTest,
