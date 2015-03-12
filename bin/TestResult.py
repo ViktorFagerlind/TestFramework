@@ -2,6 +2,7 @@ import pickle
 import datetime
 import time
 import os
+import sys
 
 from Log import Log
 from Log import Settings
@@ -14,7 +15,44 @@ class TestResultManager:
   def setup ():
     TestResultManager.singleRunSet = SetResult ("SingleTestRuns")
     TestResultManager.addSetResult (TestResultManager.singleRunSet)
+    
+    TestResultManager.readFromDisk ()
+    TestResultManager.printContents ()
 
+  @staticmethod
+  def getSetResult (setResultName):
+    for tr in TestResultManager.setResults:
+      if (tr.name == setResultName):
+        return tr
+    return None
+  
+  @staticmethod
+  def getOrCreateSetResult (setResultName):
+    result = TestResultManager.getSetResult (setResultName)
+    if (result == None):
+      result = SetResult (setResultName)
+      TestResultManager.setResults.append (result)
+    return result
+  
+  @staticmethod
+  def readFromDisk ():
+    setResultDirs = Settings.getDirsFromDir (Settings.resultFolder)
+    
+    for d in setResultDirs:
+      setResult = TestResultManager.getOrCreateSetResult (d)
+      testResultFiles = Settings.getFilenamesFromDir ("*.rslt", Settings.resultFolder + d + "/")
+
+      for fn in testResultFiles:
+        testResult = TestResult.loadFromFile (Settings.resultFolder + d + "/" + fn)
+        setResult.appendTestResult (testResult)
+      
+  @staticmethod
+  def printContents ():
+    for s in TestResultManager.setResults:
+      print (s.name)
+      for t in s.testResults:
+        print ("  " + t.name)
+    
   @staticmethod
   def addSetResult (setResult):
     TestResultManager.setResults.append (TestResultManager.singleRunSet)
@@ -29,6 +67,9 @@ class SetResult:
     
   def addTestResult (self, testResult):
     testResult.saveToFile (self.getResultPath ())
+    self.appendTestResult (testResult)
+
+  def appendTestResult (self, testResult):
     self.testResults.append (testResult)
 
   def isSuccess (self):
@@ -61,11 +102,19 @@ class TestResult:
   @staticmethod
   def loadFromFile (filepath):
     try:
-      file = open (filepath,'r') 
+      file = open (filepath,'rb') 
     except:
-      print ("Failed to load " + filepath)
+      print ("Failed to load " + filepath + ": " + str (sys.exc_info()[0]))
+      return None
       
-    return pickle.load (file)
+    try:
+      ret = pickle.load (file)
+    except:
+      print ("Failed to unpickle " + filepath + ": " + str (sys.exc_info()[0]))
+      ret = None
+      
+    file.close()
+    return ret
   
   def addEvaluation (self, criteriaName, text, success, time, log):
     criteria = None
