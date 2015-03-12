@@ -1,7 +1,7 @@
 from PySide import QtCore, QtGui
-from ResultTreeItems import TestResultTreeItem, CriteriaTreeItem, RootTreeItem
+from ResultTreeItems import NormalTreeItem, RootTreeItem
 from TestManager import TestCollection
-from TestResult import TestResultManager
+from TestResult import TestResultManager, SetResult, TestResult, Criteria, CriteriaEval
 
 class ResultTreeModel(QtCore.QAbstractItemModel):
   def __init__(self, inParent = None):
@@ -12,17 +12,21 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
 
     self.rootItem = RootTreeItem ()
 
-    # setup bogus data
-    testA = TestCollection.getTestClass ("Test A") ("Nominal")
-    testA.run (TestResultManager.singleRunSet);
-    self.SetupModelData (testA.ongoingResult)
+    self.refreshModel ()
 
-  def SetupModelData(self, testResult):
-    testResultItem = TestResultTreeItem (self.rootItem, testResult)
-    self.rootItem.AddChild (testResultItem)
-
-    for c in testResult.criteria:
-      testResultItem.AddChild (CriteriaTreeItem (testResultItem, c))
+  def refreshModel(self):
+    for sr in TestResultManager.setResults:
+      sri = NormalTreeItem (self.rootItem, sr.name, sr.isSuccess ())
+      self.rootItem.AddChild (sri)
+      for tr in sr.testResults:
+        tri = NormalTreeItem (sri, tr.name, tr.isSuccess ())
+        sri.AddChild (tri)
+        for c in tr.criteria:
+          ci = NormalTreeItem (tri, c.name, c.isSuccess ())
+          tri.AddChild (ci)
+          for e in c.evaluations:
+            ei = NormalTreeItem (ci, ("%.3f" % e.time) + ": " + e.text, e.success)
+            ci.AddChild (ei)
 
   def index(self, row, column, parentindex):
     """
