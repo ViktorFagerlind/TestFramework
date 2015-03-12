@@ -1,7 +1,8 @@
 import os
+import sys
+import glob
 import datetime
 import threading
-import sys
 
 from PySide import QtGui
 
@@ -14,6 +15,26 @@ class Settings:
   def getNowString ():
     return str (datetime.datetime.now()).replace (':','.')
 
+  @staticmethod
+  def getFilenamesFromDir (wildcard, dir):
+    result = []
+    sys.path.append (dir)
+     
+    fileNames = glob.glob (dir + wildcard)
+    for fn in fileNames:
+      splitName = fn.split('\\')
+      result.append (splitName[len (splitName)-1])
+    
+    return result
+      
+  @staticmethod
+  def getDirsFromDir (dir):
+    result = []
+    for fd in os.listdir (dir):
+      path = dir + str (fd)
+      if os.path.isdir (path):
+        result.append (str (fd))
+    return result
 
 class Log:
   noBefore   = 5
@@ -54,7 +75,6 @@ class Log:
     self.fileLock.release ()
   
   def stopFileLogging (self):
-    #print (self, "current file: " + str (self, self.currentFile))
     self.fileLock.acquire ()
     self.currentFile.close ()
     self.currentFile = None
