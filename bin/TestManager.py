@@ -1,5 +1,4 @@
 import sys
-import glob
 import xml.etree.ElementTree as ET
 
 from TestResult import TestResultManager, SetResult
@@ -49,12 +48,12 @@ class TestCollection ():
   def readTests ():
     TestCollection.tests.clear ()
 
+    # Add tests directory to the path i order to be able to import the test classes
     sys.path.append (Settings.testPath)
-    fileNames = glob.glob (Settings.testPath + "*.py")
+    
+    fileNames = Settings.getFilenamesFromDir ("*.py", Settings.testPath)
     for fn in fileNames:
-      splitName = fn.split('\\')
-      fileName = splitName[len (splitName)-1]
-      testClassName = fileName[0:(len (fileName)-3)]
+      testClassName = fn[0:(len (fn)-3)]
       TestCollection.appendTest (testClassName)
 
   @staticmethod
