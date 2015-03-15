@@ -1,3 +1,5 @@
+from PySide import QtCore, QtGui
+
 class BaseTreeItem (object):
   def __init__(self, inParentItem):
     self.parent = inParentItem
@@ -21,7 +23,7 @@ class BaseTreeItem (object):
   def Data(self):
     raise Exception("Data gather method not implemented!")
 
-  def IsSuccess(self):
+  def Icon(self):
     raise Exception("Data gather method not implemented!")
 
   def Parent(self):
@@ -39,9 +41,8 @@ class RootTreeItem(BaseTreeItem):
   def Data(self):
     return "Test Results"
     
-  def IsSuccess(self):
-    return True 
-
+  def Icon(self):
+    return None
 
 class NormalTreeItem(BaseTreeItem):
   def __init__(self, parent, name, isSuccess):
@@ -52,5 +53,21 @@ class NormalTreeItem(BaseTreeItem):
   def Data(self):
     return self.name
 
-  def IsSuccess(self):
-    return self.isSuccess
+  def Icon(self):
+    if (self.isSuccess):
+      return QtGui.QIcon("../data/icons/Apply.ico")
+    else:
+      return QtGui.QIcon("../data/icons/Delete.ico")
+
+
+class LogTreeItem(BaseTreeItem):
+  def __init__(self, parent, filePath):
+    super(LogTreeItem, self).__init__(parent)
+    self.filePath = filePath
+
+  def Data(self):
+    return "Log"
+
+  def Icon(self):
+    return QtGui.QIcon("../data/icons/Script.ico")
+

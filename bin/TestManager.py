@@ -77,7 +77,6 @@ class TestCollection ():
   def runTest (testRun, testResultSet):
     testClass = TestCollection.getTestClass (testRun.testName)
     testInstance = testClass (testRun.instanceName)
-    print ("Starting " + testInstance.fullName ())
     testInstance.run (testResultSet)
 
 # ---- TestRun ---------------------------------------------------------------------------------------------------------
@@ -113,12 +112,14 @@ class TestSet ():
       self.modelTests.appendRow (item)
 
   def Start (self):
+    Log.mainLog.put ("Start set: " + self.name)
+
     setResult = SetResult (self.name + " - " + Settings.getNowString ())
   
     for tr in self.testRuns:
       TestCollection.runTest (tr, setResult)
       
-    TestManager
+    TestResultManager.addSetResult (setResult)
 
   def StartSingleTest (self):
     selectedItems = self.listView.selectedIndexes ()
@@ -177,4 +178,4 @@ class TestManager:
 
   @staticmethod
   def Abort ():
-    print ("Abort")
+    Log.mainLog.put ("Abort")

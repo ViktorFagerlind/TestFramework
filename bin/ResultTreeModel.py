@@ -1,32 +1,53 @@
-from PySide import QtCore, QtGui
-from ResultTreeItems import NormalTreeItem, RootTreeItem
-from TestManager import TestCollection
-from TestResult import TestResultManager, SetResult, TestResult, Criteria, CriteriaEval
+import subprocess
+import os
+import sys
+import operator
+
+from PySide import QtCore
+from ResultTreeItems import LogTreeItem, NormalTreeItem, RootTreeItem
+from TestResult import TestResultManager
 
 class ResultTreeModel(QtCore.QAbstractItemModel):
-  def __init__(self, inParent = None):
-    self.successIcon = QtGui.QIcon("../data/icons/Apply.ico")
-    self.failureIcon = QtGui.QIcon("../data/icons/Delete.ico")
-  
+  def __init__(self, treeView, clickedAction, inParent = None):
     super(ResultTreeModel, self).__init__(inParent)
-
     self.rootItem = RootTreeItem ()
+    self.treeView = treeView
+    clickedAction.triggered.connect  (self.doubleClicked)
 
-    self.refreshModel ()
+  def doubleClicked (self):
+    i = self.treeView.selectedIndexes ()[0].internalPointer ()
 
-  def refreshModel(self):
-    for sr in TestResultManager.setResults:
+    if (isinstance(i, LogTreeItem)):
+      absLogPath = os.path.abspath (i.filePath)
+      Log.mainLog.put ("opening " + absLogPath + "...")
+      if sys.platform.startswith('darwin'):
+        subprocess.call(('open', absLogPath))
+      elif os.name == 'nt':
+        os.startfile(absLogPath)
+      elif os.name == 'posix':
+        subprocess.call(('xdg-open', absLogPath))
+
+  def refreshGui (self):
+    self.beginResetModel ()
+    self.rootItem = RootTreeItem ()
+    for sr in sorted (TestResultManager.setResults, key=operator.attrgetter("name")):
       sri = NormalTreeItem (self.rootItem, sr.name, sr.isSuccess ())
       self.rootItem.AddChild (sri)
-      for tr in sr.testResults:
+      for tr in sorted (sr.testResults, key=operator.attrgetter("name")):
         tri = NormalTreeItem (sri, tr.name, tr.isSuccess ())
         sri.AddChild (tri)
-        for c in tr.criteria:
+        li = LogTreeItem (tri, tr.resultPath + tr.name + ".log")
+        tri.AddChild (li)
+        for c in sorted (tr.criteria, key=operator.attrgetter("name")):
           ci = NormalTreeItem (tri, c.name, c.isSuccess ())
           tri.AddChild (ci)
-          for e in c.evaluations:
+          for e in sorted (c.evaluations, key=operator.attrgetter("time")):
             ei = NormalTreeItem (ci, ("%.3f" % e.time) + ": " + e.text, e.success)
             ci.AddChild (ei)
+
+    TestResultManager.setResults = sorted (TestResultManager.setResults, key=operator.attrgetter("name"))
+
+    self.endResetModel ()
 
   def index(self, row, column, parentindex):
     """
@@ -127,7 +148,7 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
     parent_item = index.internalPointer()
 
     if (index.column() != 0):
-      print ("Only support for one column at the moment");
+      Log.mainLog.putError ("Only support for one column at the moment");
       return None
     
     # Return the data associated with the column
@@ -136,20 +157,17 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
     if role == QtCore.Qt.SizeHintRole:
         return QtCore.QSize(20,20)
     if role == QtCore.Qt.DecorationRole:
-        if parent_item.IsSuccess ():
-          return self.successIcon
-        else:
-          return self.failureIcon
-          
+        return parent_item.Icon ()
+
     # Otherwise return default
     return None
 
 
   def headerData(self, column, orientation, role):
     if (orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole):
-        try:
-            return self.rootItem.Data ()
-        except IndexError:
-            pass
+      try:
+        return self.rootItem.Data ()
+      except IndexError:
+        pass
 
     return None

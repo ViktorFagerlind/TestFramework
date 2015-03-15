@@ -2,7 +2,7 @@ import time
 
 from TestManager  import TestConfiguration
 from Log 		      import Log, LogManager, Settings
-from TestResult   import TestResult, SetResult
+from TestResult   import TestResult
 
 class Test:
   def __init__ (self, name, instanceName):
@@ -48,18 +48,18 @@ class Test:
     self.log.mediumHeading (name)
 
   def run (self, setResult):
+    Log.mainLog.put ("Starting test: " + self.fullName ())
+
     self.startTime = time.time ()
     self.timeName = self.fullName () + " - " + Settings.getNowString ()
 
-    self.log = LogManager.addLog (self.fullName ())
-    self.log.startFileLogging (setResult.getResultPath (), self.timeName)
-    self.ongoingResult = TestResult (self.timeName)
+    self.log = LogManager.addLog (self.fullName (), setResult.getResultPath (), self.timeName)
+    self.ongoingResult = TestResult (self.timeName, setResult.getResultPath ())
     
     self.printStart ()
     self.runSequence ()
     
     self.log.mediumHeading (self.name + " done!")
     self.ongoingResult.log (self.log)
-    self.log.stopFileLogging ()
 
     setResult.addTestResult (self.ongoingResult)

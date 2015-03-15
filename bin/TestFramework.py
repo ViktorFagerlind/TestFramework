@@ -21,18 +21,18 @@ class ControlMainWindow (QtGui.QMainWindow):
 
     Log.mainLog.put ("Ready!")
     
-    # Init TestResultManager
-    TestResultManager.setup ()
-
     # Init TestManager
     self.TestManager = TestManager (self.ui.tabWidgetTest,
                                     self.ui.actionStartSet,
                                     self.ui.actionStartTest,
                                     self.ui.actionAbort)
 
-    # Init test results tree view
-    self.ui.TreeViewResults.setModel (ResultTreeModel ())
+    # Init TestResultManager
+    self.resultTreeModel = ResultTreeModel (self.ui.TreeViewResults, self.ui.actionTestResultsClicked)
+    self.ui.TreeViewResults.setModel (self.resultTreeModel)
     self.ui.TreeViewResults.setAlternatingRowColors(True)
+
+    TestResultManager.setup (self.resultTreeModel)
 
   @staticmethod
   def Quit ():

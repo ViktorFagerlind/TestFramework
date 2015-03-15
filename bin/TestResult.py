@@ -1,6 +1,4 @@
 import pickle
-import datetime
-import time
 import os
 import sys
 
@@ -10,14 +8,17 @@ from Log import Settings
 class TestResultManager:
   singleRunSet = None
   setResults = []
-  
+  resultTreeModel = None
+
   @staticmethod
-  def setup ():
+  def setup (resultTreeModel):
     TestResultManager.singleRunSet = SetResult ("SingleTestRuns")
     TestResultManager.addSetResult (TestResultManager.singleRunSet)
     
+    TestResultManager.resultTreeModel = resultTreeModel
     TestResultManager.readFromDisk ()
-    TestResultManager.printContents ()
+    #TestResultManager.printContents ()
+
 
   @staticmethod
   def getSetResult (setResultName):
@@ -45,7 +46,14 @@ class TestResultManager:
       for fn in testResultFiles:
         testResult = TestResult.loadFromFile (Settings.resultFolder + d + "/" + fn)
         setResult.appendTestResult (testResult)
-      
+
+    TestResultManager.refreshGui ()
+
+  @staticmethod
+  def refreshGui ():
+    if (TestResultManager.resultTreeModel != None):
+      TestResultManager.resultTreeModel.refreshGui ()
+
   @staticmethod
   def printContents ():
     for s in TestResultManager.setResults:
@@ -55,8 +63,9 @@ class TestResultManager:
     
   @staticmethod
   def addSetResult (setResult):
-    TestResultManager.setResults.append (TestResultManager.singleRunSet)
-    
+    TestResultManager.setResults.append (setResult)
+    TestResultManager.refreshGui ()
+
 class SetResult:
   def __init__ (self, name):
     self.name         = name
@@ -68,6 +77,7 @@ class SetResult:
   def addTestResult (self, testResult):
     testResult.saveToFile (self.getResultPath ())
     self.appendTestResult (testResult)
+    TestResultManager.refreshGui ()
 
   def appendTestResult (self, testResult):
     self.testResults.append (testResult)
@@ -79,10 +89,11 @@ class SetResult:
     return True
 
 class TestResult:
-  def __init__ (self, name):
-    self.name     = name
-    self.criteria = []
-    
+  def __init__ (self, name, resultPath):
+    self.name       = name
+    self.criteria   = []
+    self.resultPath = resultPath
+
   def initCriteria (self, criteriaNames):
     for cn in criteriaNames:
       self.criteria.append (Criteria (cn))
@@ -97,20 +108,20 @@ class TestResult:
       pickle.dump (self, file)
       file.close()
     except:
-      print ("Failed to save " + filepath)
+      Log.mainLog.putError ("Failed to save " + filepath)
 
   @staticmethod
   def loadFromFile (filepath):
     try:
       file = open (filepath,'rb') 
     except:
-      print ("Failed to load " + filepath + ": " + str (sys.exc_info()[0]))
+      Log.mainLog.putError ("Failed to load " + filepath + ": " + str (sys.exc_info()[0]))
       return None
       
     try:
       ret = pickle.load (file)
     except:
-      print ("Failed to unpickle " + filepath + ": " + str (sys.exc_info()[0]))
+      Log.mainLog.putError ("Failed to unpickle " + filepath + ": " + str (sys.exc_info()[0]))
       ret = None
       
     file.close()
@@ -141,7 +152,8 @@ class TestResult:
     for c in self.criteria:
       c.printResult (log)
 
-    log.put ("\nTotal test result: " + Log.getSuccessFailed (self.isSuccess ()))
+    success = self.isSuccess ()
+    log.putSuccessFail ("\nTotal test result: " + Log.getSuccessFailed (success), success)
 
 class Criteria:
   def __init__ (self, name):
@@ -153,7 +165,7 @@ class Criteria:
     self.evaluations.append (CriteriaEval (time, text, success))
     
     log.smallHeading ("Criteria: " + self.name)
-    log.put (text + ": " + Log.getSuccessFailed (success) + "\n")
+    log.putSuccessFail (text + ": " + Log.getSuccessFailed (success) + "\n", success)
             
   def getResult (self):
     if (not self.isEvaluated ()):
@@ -177,7 +189,7 @@ class Criteria:
   def printResult (self, log):
     log.put (Log.extend (self.name + ": ", 30, " ") + self.getResult ())
     for e in self.evaluations:
-      log.put (Log.extend ("  " + e.text, 30, " ") + Log.getSuccessFailed (e.success) + " (%.1f" % (e.time * 1000) + "ms)")
+      log.putSuccessFail (Log.extend ("  " + e.text, 30, " ") + Log.getSuccessFailed (e.success) + " (%.1f" % (e.time * 1000) + "ms)", e.success)
       
     log.put ("")
       

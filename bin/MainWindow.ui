@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <widget class="QSplitter" name="splitter_2">
       <property name="orientation">
@@ -24,21 +24,11 @@
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QGroupBox" name="groupBoxTests">
+        <property name="title">
+         <string>Tests</string>
+        </property>
         <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QLabel" name="labelTests">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Test Sets</string>
-           </property>
-          </widget>
-         </item>
          <item>
           <widget class="QTabWidget" name="tabWidgetTest">
            <property name="currentIndex">
@@ -101,23 +91,22 @@
          </item>
         </layout>
        </widget>
-       <widget class="QTreeView" name="TreeViewResults"/>
+       <widget class="QGroupBox" name="groupBoxResults">
+        <property name="title">
+         <string>Results</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QTreeView" name="TreeViewResults"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
-      <widget class="QWidget" name="layoutWidget_3">
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="labelLog">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Logs</string>
-          </property>
-         </widget>
-        </item>
+      <widget class="QGroupBox" name="groupBoxLog">
+       <property name="title">
+        <string>Log</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QTabWidget" name="tabWidgetLog">
           <property name="currentIndex">
@@ -130,8 +119,6 @@
      </widget>
     </item>
    </layout>
-   <zorder>splitter_2</zorder>
-   <zorder>labelLog</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -215,6 +202,11 @@
     <string>Start Test</string>
    </property>
   </action>
+  <action name="actionTestResultsClicked">
+   <property name="text">
+    <string>TestResultsClicked</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
@@ -259,6 +251,22 @@
     <hint type="sourcelabel">
      <x>210</x>
      <y>576</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>TreeViewResults</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>actionTestResultsClicked</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>362</x>
+     <y>525</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

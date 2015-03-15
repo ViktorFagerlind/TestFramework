@@ -13,7 +13,8 @@ class Settings:
   
   @staticmethod
   def getNowString ():
-    return str (datetime.datetime.now()).replace (':','.')
+    nowString = str (datetime.datetime.now()).replace (':','.')
+    return nowString[0:len (nowString)-3]
 
   @staticmethod
   def getFilenamesFromDir (wildcard, dir):
@@ -43,56 +44,65 @@ class Log:
 
   mainLog = None
 
-  def __init__ (self, isMain, listView):
+  def __init__ (self, listView, directory, filename):
     self.listView = listView
     self.modelLog = QtGui.QStandardItemModel (self.listView)
     self.listView.setModel (self.modelLog)
+    self.directory = directory
 
     self.fileLock = threading.Lock ()
-
-    if isMain:
-      Log.mainLog = self
-
     self.currentFile = None
+    self.__startFileLogging__ (filename)
 
-  def startFileLogging (self, directory, filename):
+  def __del__(self):
+    self.__stopFileLogging__ ()
+
+  def __startFileLogging__ (self, filename):
     self.fileLock.acquire ()
     
-    if (not os.path.isdir (directory)):
-      os.makedirs (directory)
+    if (not os.path.isdir (self.directory)):
+      os.makedirs (self.directory)
     
-    filepath = directory + filename + ".log"
+    filepath = self.directory + filename + ".log"
     
     if (self.currentFile != None):
-      print ("Failed to open " + filepath + "- log file already open")
+      Log.mainLog.putError ("Failed to open " + filepath + "- log file already open")
     else: 
       try:
         self.currentFile = open (filepath,'w')     
       except:
-        print ("Failed to open " + filepath)
+        Log.mainLog.putError ("Failed to open " + filepath)
         self.currentFile = None
     
     self.fileLock.release ()
   
-  def stopFileLogging (self):
+  def __stopFileLogging__ (self):
     self.fileLock.acquire ()
     self.currentFile.close ()
     self.currentFile = None
     self.fileLock.release ()
   
-  def appendLogLine (self, text):
-    item = QtGui.QStandardItem (text)
+  def appendLogLine (self, text, bold, color):
+    font = QtGui.QFont("Courier New", 9, QtGui.QFont.Light)
+    font.setBold (bold)
 
-    font = QtGui.QFont('Courier New', 9, QtGui.QFont.Light)
+    item = QtGui.QStandardItem (text)
     item.setFont (font)
+    item.setForeground (QtGui.QColor(color))
 
     self.modelLog.appendRow (item)
 
   def newline (self):
     self.put ("")
 
-  def put (self, text):
-    self.appendLogLine (text)
+  def putSuccessFail (self, text, success):
+    self.put (text, True, "green" if success else "red")
+
+  def putError (self, text):
+    self.put (text, False, "red")
+
+  def put (self, text, bold = False, color = "black"):
+    self.appendLogLine (text, bold, color)
     
     self.fileLock.acquire ()
     if (self.currentFile != None):
@@ -143,26 +153,21 @@ class LogManager:
     LogManager.tabWidget.setTabsClosable (True)
     LogManager.tabWidget.tabCloseRequested.connect (LogManager.closeTab)
 
-    LogManager.__addLog__ (True, "Main")
-
-  @staticmethod
-  def addLog (name):
-    return LogManager.__addLog__ (False, name)
+    Log.mainLog = LogManager.addLog ("System", Settings.resultFolder, "System")
 
   @staticmethod
   def closeTab (currentIndex):
     if (currentIndex == 0):
-      Log.mainLog.put ("Cannot close the main log")
+      Log.mainLog.put ("Cannot close the system log")
       return
 
     LogManager.tabWidget.removeTab (currentIndex)
 
   @staticmethod
 
-
-  def __addLog__ (isMain, name):
+  def addLog (name, directory, filename):
     listView = QtGui.QListView (LogManager.tabWidget)
     LogManager.tabWidget.addTab (listView, name)
     LogManager.tabWidget.setCurrentWidget (listView)
 
-    return Log (isMain, listView)
+    return Log (listView, directory, filename)
