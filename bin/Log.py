@@ -17,6 +17,11 @@ class Settings:
     return nowString[0:len (nowString)-3]
 
   @staticmethod
+  def getSmallNowString ():
+    nowString = str (datetime.datetime.now())
+    return nowString[11:22]
+
+  @staticmethod
   def getFilenamesFromDir (wildcard, dir):
     result = []
     sys.path.append (dir)
@@ -81,7 +86,9 @@ class Log:
     self.currentFile.close ()
     self.currentFile = None
     self.fileLock.release ()
-  
+
+
+
   def appendLogLine (self, text, bold, color):
     font = QtGui.QFont("Courier New", 9, QtGui.QFont.Light)
     font.setBold (bold)
@@ -93,7 +100,7 @@ class Log:
     self.modelLog.appendRow (item)
 
   def newline (self):
-    self.put ("")
+    self.appendLogLine ("", False, "black")
 
   def putSuccessFail (self, text, success):
     self.put (text, True, "green" if success else "red")
@@ -101,9 +108,10 @@ class Log:
   def putError (self, text):
     self.put (text, False, "red")
 
-  def put (self, text, bold = False, color = "black"):
+  def put (self, text, bold = False, color = "black", timeStamp = True):
+    text = (("[" + Settings.getSmallNowString () + "] ") if timeStamp else "") + text
     self.appendLogLine (text, bold, color)
-    
+
     self.fileLock.acquire ()
     if (self.currentFile != None):
       self.currentFile.write (text + "\n")
@@ -128,7 +136,7 @@ class Log:
     else:
       line += self.extend ("", length - len (line), self.filler)
         
-    self.put (line)
+    self.put (line, False, "black", False)
 
   @staticmethod
   def getSuccessFailed (isSuccess):
@@ -158,7 +166,7 @@ class LogManager:
   @staticmethod
   def closeTab (currentIndex):
     if (currentIndex == 0):
-      Log.mainLog.put ("Cannot close the system log")
+      Log.mainLog.putError ("Cannot close the system log")
       return
 
     LogManager.tabWidget.removeTab (currentIndex)

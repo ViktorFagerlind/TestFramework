@@ -41,10 +41,10 @@ class Test:
 
   def printStart (self):
     self.log.largeHeading (self.timeName)
-    self.log.put ("")
+    self.log.newline ()
 
   def printSubstep (self, name):
-    self.log.put ("\n")
+    self.log.newline ()
     self.log.mediumHeading (name)
 
   def run (self, setResult):

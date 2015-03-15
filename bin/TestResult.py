@@ -153,7 +153,8 @@ class TestResult:
       c.printResult (log)
 
     success = self.isSuccess ()
-    log.putSuccessFail ("\nTotal test result: " + Log.getSuccessFailed (success), success)
+    log.newline ()
+    log.putSuccessFail ("Total test result: " + Log.getSuccessFailed (success), success)
 
 class Criteria:
   def __init__ (self, name):
@@ -165,7 +166,8 @@ class Criteria:
     self.evaluations.append (CriteriaEval (time, text, success))
     
     log.smallHeading ("Criteria: " + self.name)
-    log.putSuccessFail (text + ": " + Log.getSuccessFailed (success) + "\n", success)
+    log.putSuccessFail (text + ": " + Log.getSuccessFailed (success), success)
+    log.newline ()
             
   def getResult (self):
     if (not self.isEvaluated ()):
@@ -191,7 +193,7 @@ class Criteria:
     for e in self.evaluations:
       log.putSuccessFail (Log.extend ("  " + e.text, 30, " ") + Log.getSuccessFailed (e.success) + " (%.1f" % (e.time * 1000) + "ms)", e.success)
       
-    log.put ("")
+    log.newline ()
       
 
 class CriteriaEval:
