@@ -189,7 +189,9 @@ class Criteria:
     return True;
 
   def printResult (self, log):
-    log.put (Log.extend (self.name + ": ", 30, " ") + self.getResult ())
+    color = "orange" if not self.isEvaluated () else ("green" if self.isSuccess () else "red")
+    log.put (Log.extend (self.name + ": ", 30, " ") + self.getResult (), True, color)
+    print (color)
     for e in self.evaluations:
       log.putSuccessFail (Log.extend ("  " + e.text, 30, " ") + Log.getSuccessFailed (e.success) + " (%.1f" % (e.time * 1000) + "ms)", e.success)
       
