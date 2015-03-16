@@ -100,7 +100,7 @@ class Log:
     self.modelLog.appendRow (item)
 
   def newline (self):
-    self.appendLogLine ("", False, "black")
+    self.put ("", False, "black", False)
 
   def putSuccessFail (self, text, success):
     self.put (text, True, "green" if success else "red")
