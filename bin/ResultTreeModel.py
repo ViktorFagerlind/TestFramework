@@ -5,8 +5,8 @@ import operator
 
 from PySide           import QtCore
 from ResultTreeItems  import LogTreeItem, NormalTreeItem, RootTreeItem
-from TestResult       import TestResultManager
-from Log              import Log
+from Results          import TestResultManager
+from Logging          import Log
 
 class ResultTreeModel(QtCore.QAbstractItemModel):
   def __init__(self, treeView, clickedAction, inParent = None):

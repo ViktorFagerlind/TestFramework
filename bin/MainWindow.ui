@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1027</width>
-    <height>837</height>
+    <width>863</width>
+    <height>874</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -99,6 +99,59 @@
          <item>
           <widget class="QTreeView" name="TreeViewResults"/>
          </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMinimumSize</enum>
+           </property>
+           <item>
+            <widget class="QPushButton" name="startSetButton_2">
+             <property name="text">
+              <string>Start Test Set</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../data/icons/Play.ico</normaloff>../data/icons/Play.ico</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="startTestButton_2">
+             <property name="text">
+              <string>Start Test</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../data/icons/Play.ico</normaloff>../data/icons/Play.ico</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="abortButton_2">
+             <property name="text">
+              <string>Abort</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../data/icons/Cancel.ico</normaloff>../data/icons/Cancel.ico</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
         </layout>
        </widget>
       </widget>
@@ -125,7 +178,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1027</width>
+     <width>863</width>
      <height>21</height>
     </rect>
    </property>

@@ -1,4 +1,4 @@
-from Log  import Log
+from Logging  import Log
 from Test import Test
 
 class TestB (Test):

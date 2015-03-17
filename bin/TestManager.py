@@ -1,9 +1,9 @@
 import sys
 import xml.etree.ElementTree as ET
 
-from TestResult import TestResultManager, SetResult
+from Results import TestResultManager, SetResult
 from PySide     import QtGui
-from Log        import Log, Settings
+from Logging        import Log, Settings
 
 # ---- TestCollection --------------------------------------------------------------------------------------------------
 

@@ -1,9 +1,9 @@
 import sys
 
 from ResultTreeModel  import ResultTreeModel
-from Log              import Log, LogManager
+from Logging              import Log, LogManager
 from TestManager      import TestManager
-from TestResult       import TestResultManager
+from Results       import TestResultManager
 from PySide           import QtGui
 from MainWindow       import Ui_MainWindow
 

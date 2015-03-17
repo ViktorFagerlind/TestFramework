@@ -2,8 +2,8 @@ import pickle
 import os
 import sys
 
-from Log import Log
-from Log import Settings
+from Logging import Log
+from Logging import Settings
 
 class TestResultManager:
   singleRunSet = None
@@ -84,7 +84,7 @@ class SetResult:
 
   def isSuccess (self):
     for tr in self.testResults:
-      if not tr.isSuccess ():
+       if not tr.isSuccess ():
         return False
     return True
 
@@ -191,7 +191,6 @@ class Criteria:
   def printResult (self, log):
     color = "orange" if not self.isEvaluated () else ("green" if self.isSuccess () else "red")
     log.put (Log.extend (self.name + ": ", 30, " ") + self.getResult (), True, color)
-    print (color)
     for e in self.evaluations:
       log.putSuccessFail (Log.extend ("  " + e.text, 30, " ") + Log.getSuccessFailed (e.success) + " (%.1f" % (e.time * 1000) + "ms)", e.success)
       

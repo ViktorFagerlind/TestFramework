@@ -1,8 +1,8 @@
 import time
 
 from TestManager  import TestConfiguration
-from Log 		      import Log, LogManager, Settings
-from TestResult   import TestResult
+from Logging 		      import Log, LogManager, Settings
+from Results   import TestResult
 
 class Test:
   def __init__ (self, name, instanceName):
