@@ -1,10 +1,10 @@
 import sys
 
 from ResultTreeModel  import ResultTreeModel
-from Logging              import Log, LogManager
+from Logging          import Log, LogManager
 from TestManager      import TestManager
-from Results       import TestResultManager
-from PySide           import QtGui
+from Results          import TestResultManager
+from PySide           import QtGui, QtCore
 from MainWindow       import Ui_MainWindow
 
 class ControlMainWindow (QtGui.QMainWindow):
@@ -34,10 +34,41 @@ class ControlMainWindow (QtGui.QMainWindow):
 
     TestResultManager.setup (self.resultTreeModel)
 
+    self.restoreGuiState ()
+
   @staticmethod
   def Quit ():
     QtGui.qApp.closeAllWindows ()
-  
+
+  def closeEvent(self, event):
+    self.saveGuiState ()
+
+  def saveGuiState(self):
+    qsettings = QtCore.QSettings("VF", "TestFramework")
+
+    qsettings.beginGroup( "mainWindow" )
+    qsettings.setValue( "geometry", self.saveGeometry() )
+    qsettings.setValue( "maximized", self.isMaximized() )
+    isMax = self.isMaximized()
+    if not self.isMaximized():
+        qsettings.setValue( "pos", self.pos() )
+        qsettings.setValue( "size", self.size() )
+    qsettings.endGroup()
+
+  def restoreGuiState (self):
+    qsettings = QtCore.QSettings("VF", "TestFramework")
+
+    qsettings.beginGroup( "mainWindow" )
+    # No need for toPoint, etc. : PySide converts types
+    self.restoreGeometry(qsettings.value( "geometry", self.saveGeometry()))
+    self.move(qsettings.value( "pos", self.pos()))
+    self.resize(qsettings.value( "size", self.size()))
+
+    if qsettings.value ("maximized", self.isMaximized()) == "true":
+      self.showMaximized()
+
+    qsettings.endGroup()
+
 if __name__ == "__main__":
     app = QtGui.QApplication (sys.argv)
     mySW = ControlMainWindow ()

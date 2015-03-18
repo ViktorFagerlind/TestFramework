@@ -25,6 +25,12 @@
         <enum>Qt::Vertical</enum>
        </property>
        <widget class="QGroupBox" name="groupBoxTests">
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="title">
          <string>Tests</string>
         </property>
@@ -105,35 +111,13 @@
             <enum>QLayout::SetMinimumSize</enum>
            </property>
            <item>
-            <widget class="QPushButton" name="startSetButton_2">
+            <widget class="QPushButton" name="gotoLogButton">
              <property name="text">
-              <string>Start Test Set</string>
+              <string>Goto Log</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../data/icons/Play.ico</normaloff>../data/icons/Play.ico</iconset>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="startTestButton_2">
-             <property name="text">
-              <string>Start Test</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../data/icons/Play.ico</normaloff>../data/icons/Play.ico</iconset>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="abortButton_2">
-             <property name="text">
-              <string>Abort</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../data/icons/Cancel.ico</normaloff>../data/icons/Cancel.ico</iconset>
+               <normaloff>../data/icons/Script.ico</normaloff>../data/icons/Script.ico</iconset>
              </property>
             </widget>
            </item>
@@ -157,7 +141,7 @@
       </widget>
       <widget class="QGroupBox" name="groupBoxLog">
        <property name="title">
-        <string>Log</string>
+        <string>Logs</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -166,6 +150,37 @@
            <number>-1</number>
           </property>
          </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinimumSize</enum>
+          </property>
+          <item>
+           <widget class="QPushButton" name="closeLogsButton">
+            <property name="text">
+             <string>Close Logs</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../data/icons/Wide brush.ico</normaloff>../data/icons/Wide brush.ico</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -196,8 +211,22 @@
     <addaction name="actionStartTest"/>
     <addaction name="actionAbort"/>
    </widget>
+   <widget class="QMenu" name="menuResults">
+    <property name="title">
+     <string>Results</string>
+    </property>
+    <addaction name="actionActionGotoLog"/>
+   </widget>
+   <widget class="QMenu" name="menuLogs">
+    <property name="title">
+     <string>Logs</string>
+    </property>
+    <addaction name="actionActionCloseLogs"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTest"/>
+   <addaction name="menuResults"/>
+   <addaction name="menuLogs"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -216,8 +245,16 @@
    <addaction name="actionStartSet"/>
    <addaction name="actionStartTest"/>
    <addaction name="actionAbort"/>
+   <addaction name="separator"/>
+   <addaction name="actionActionGotoLog"/>
+   <addaction name="separator"/>
+   <addaction name="actionActionCloseLogs"/>
   </widget>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset>
+     <normaloff>../data/icons/Delete.ico</normaloff>../data/icons/Delete.ico</iconset>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
@@ -258,6 +295,24 @@
   <action name="actionTestResultsClicked">
    <property name="text">
     <string>TestResultsClicked</string>
+   </property>
+  </action>
+  <action name="actionActionCloseLogs">
+   <property name="icon">
+    <iconset>
+     <normaloff>../data/icons/Wide brush.ico</normaloff>../data/icons/Wide brush.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Close Logs</string>
+   </property>
+  </action>
+  <action name="actionActionGotoLog">
+   <property name="icon">
+    <iconset>
+     <normaloff>../data/icons/Script.ico</normaloff>../data/icons/Script.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Goto Log</string>
    </property>
   </action>
  </widget>
