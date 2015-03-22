@@ -54,10 +54,47 @@ class NormalTreeItem(BaseTreeItem):
     return self.name
 
   def Icon(self):
+    raise Exception("Icon method not implemented!")
+
+class SetTreeItem(NormalTreeItem):
+  def __init__(self, parent, name, isSuccess):
+    super(SetTreeItem, self).__init__(parent, name, isSuccess)
+
+  def Icon(self):
     if (self.isSuccess):
-      return QtGui.QIcon("../data/icons/Apply.ico")
+      return QtGui.QIcon("../data/icons/PassedSet.ico")
     else:
-      return QtGui.QIcon("../data/icons/Delete.ico")
+      return QtGui.QIcon("../data/icons/FailedSet.ico")
+
+class TestTreeItem(NormalTreeItem):
+  def __init__(self, parent, name, isSuccess):
+    super(TestTreeItem, self).__init__(parent, name, isSuccess)
+
+  def Icon(self):
+    if (self.isSuccess):
+      return QtGui.QIcon("../data/icons/PassedTest.ico")
+    else:
+      return QtGui.QIcon("../data/icons/FailedTest.ico")
+
+class CriteriaTreeItem(NormalTreeItem):
+  def __init__(self, parent, name, isSuccess):
+    super(CriteriaTreeItem, self).__init__(parent, name, isSuccess)
+
+  def Icon(self):
+    if (self.isSuccess):
+      return QtGui.QIcon("../data/icons/PassedCriteria.ico")
+    else:
+      return QtGui.QIcon("../data/icons/FailedCriteria.ico")
+
+class EvaluationTreeItem(NormalTreeItem):
+  def __init__(self, parent, name, isSuccess):
+    super(EvaluationTreeItem, self).__init__(parent, name, isSuccess)
+
+  def Icon(self):
+    if (self.isSuccess):
+      return QtGui.QIcon("../data/icons/Passed.ico")
+    else:
+      return QtGui.QIcon("../data/icons/Failed.ico")
 
 
 class LogTreeItem(BaseTreeItem):

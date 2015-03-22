@@ -60,5 +60,10 @@
       <Acceleration>  9 </Acceleration>
     </Instance>
   </Test>
+
+  <Test name = "Charlottes test">
+    <Instance name = "Nominal">
+    </Instance>
+  </Test>  
 </TestConfigurations>
 

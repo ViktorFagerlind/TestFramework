@@ -136,7 +136,7 @@ class Log:
     else:
       line += self.extend ("", length - len (line), self.filler)
         
-    self.put (line, False, "black", False)
+    self.put (line, False)
 
   @staticmethod
   def getSuccessFailed (isSuccess):

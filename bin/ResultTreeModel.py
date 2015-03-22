@@ -4,7 +4,7 @@ import sys
 import operator
 
 from PySide           import QtCore
-from ResultTreeItems  import LogTreeItem, NormalTreeItem, RootTreeItem
+from ResultTreeItems  import LogTreeItem, SetTreeItem, TestTreeItem, CriteriaTreeItem, EvaluationTreeItem, RootTreeItem
 from Results          import TestResultManager
 from Logging          import Log
 
@@ -32,18 +32,18 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
     self.beginResetModel ()
     self.rootItem = RootTreeItem ()
     for sr in sorted (TestResultManager.setResults, key=operator.attrgetter("name")):
-      sri = NormalTreeItem (self.rootItem, sr.name, sr.isSuccess ())
+      sri = SetTreeItem (self.rootItem, sr.name, sr.isSuccess ())
       self.rootItem.AddChild (sri)
       for tr in sorted (sr.testResults, key=operator.attrgetter("name")):
-        tri = NormalTreeItem (sri, tr.name, tr.isSuccess ())
+        tri = TestTreeItem (sri, tr.name, tr.isSuccess ())
         sri.AddChild (tri)
         li = LogTreeItem (tri, tr.resultPath + tr.name + ".log")
         tri.AddChild (li)
         for c in sorted (tr.criteria, key=operator.attrgetter("name")):
-          ci = NormalTreeItem (tri, c.name, c.isSuccess ())
+          ci = CriteriaTreeItem (tri, c.name, c.isSuccess ())
           tri.AddChild (ci)
           for e in sorted (c.evaluations, key=operator.attrgetter("time")):
-            ei = NormalTreeItem (ci, ("%.3f" % e.time) + ": " + e.text, e.success)
+            ei = EvaluationTreeItem (ci, ("%.3f" % e.time) + ": " + e.text, e.success)
             ci.AddChild (ei)
 
     TestResultManager.setResults = sorted (TestResultManager.setResults, key=operator.attrgetter("name"))
@@ -156,7 +156,7 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
     if role == QtCore.Qt.DisplayRole:
         return parent_item.Data ()
     if role == QtCore.Qt.SizeHintRole:
-        return QtCore.QSize(20,20)
+        return QtCore.QSize(22,22)
     if role == QtCore.Qt.DecorationRole:
         return parent_item.Icon ()
 
