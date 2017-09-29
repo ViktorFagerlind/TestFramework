@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sun Mar 22 19:37:39 2015
-#      by: pyside-uic 0.2.15 running on PySide 1.2.2
+# Created: Fri Sep 29 14:33:01 2017
+#      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -87,7 +87,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.closeLogsButton = QtGui.QPushButton(self.groupBoxLog)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("../data/icons/Wide brush.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap("../data/icons/WideBrush.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.closeLogsButton.setIcon(icon4)
         self.closeLogsButton.setObjectName("closeLogsButton")
         self.horizontalLayout_3.addWidget(self.closeLogsButton)

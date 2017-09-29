@@ -170,7 +170,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../data/icons/Wide brush.png</normaloff>../data/icons/Wide brush.png</iconset>
+              <normaloff>../data/icons/WideBrush.png</normaloff>../data/icons/WideBrush.png</iconset>
             </property>
            </widget>
           </item>
@@ -307,7 +307,7 @@
   <action name="actionActionCloseLogs">
    <property name="icon">
     <iconset>
-     <normaloff>../data/icons/Wide brush.png</normaloff>../data/icons/Wide brush.png</iconset>
+     <normaloff>../data/icons/WideBrush.png</normaloff>../data/icons/WideBrush.png</iconset>
    </property>
    <property name="text">
     <string>Close Logs</string>
