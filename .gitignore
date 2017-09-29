@@ -4,3 +4,4 @@
 *.log
 QtProject/*
 .idea/*
+bin/__pycache__

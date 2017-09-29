@@ -54,7 +54,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../data/icons/PlayMultiple.ico</normaloff>../data/icons/PlayMultiple.ico</iconset>
+               <normaloff>../data/icons/PlayMultiple.png</normaloff>../data/icons/PlayMultiple.png</iconset>
              </property>
             </widget>
            </item>
@@ -65,7 +65,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../data/icons/Play.ico</normaloff>../data/icons/Play.ico</iconset>
+               <normaloff>../data/icons/Play.png</normaloff>../data/icons/Play.png</iconset>
              </property>
             </widget>
            </item>
@@ -76,7 +76,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../data/icons/Cancel.ico</normaloff>../data/icons/Cancel.ico</iconset>
+               <normaloff>../data/icons/Cancel.png</normaloff>../data/icons/Cancel.png</iconset>
              </property>
             </widget>
            </item>
@@ -124,7 +124,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../data/icons/Script.ico</normaloff>../data/icons/Script.ico</iconset>
+               <normaloff>../data/icons/Script.png</normaloff>../data/icons/Script.png</iconset>
              </property>
             </widget>
            </item>
@@ -170,7 +170,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../data/icons/Wide brush.ico</normaloff>../data/icons/Wide brush.ico</iconset>
+              <normaloff>../data/icons/Wide brush.png</normaloff>../data/icons/Wide brush.png</iconset>
             </property>
            </widget>
           </item>
@@ -260,7 +260,7 @@
   <action name="actionQuit">
    <property name="icon">
     <iconset>
-     <normaloff>../data/icons/Delete.ico</normaloff>../data/icons/Delete.ico</iconset>
+     <normaloff>../data/icons/Delete.png</normaloff>../data/icons/Delete.png</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -269,7 +269,7 @@
   <action name="actionStartTest">
    <property name="icon">
     <iconset>
-     <normaloff>../data/icons/Play.ico</normaloff>../data/icons/Play.ico</iconset>
+     <normaloff>../data/icons/Play.png</normaloff>../data/icons/Play.png</iconset>
    </property>
    <property name="text">
     <string>Start Test</string>
@@ -281,7 +281,7 @@
   <action name="actionAbort">
    <property name="icon">
     <iconset>
-     <normaloff>../data/icons/Cancel.ico</normaloff>../data/icons/Cancel.ico</iconset>
+     <normaloff>../data/icons/Cancel.png</normaloff>../data/icons/Cancel.png</iconset>
    </property>
    <property name="text">
     <string>Abort</string>
@@ -290,7 +290,7 @@
   <action name="actionStartSet">
    <property name="icon">
     <iconset>
-     <normaloff>../data/icons/PlayMultiple.ico</normaloff>../data/icons/PlayMultiple.ico</iconset>
+     <normaloff>../data/icons/PlayMultiple.png</normaloff>../data/icons/PlayMultiple.png</iconset>
    </property>
    <property name="text">
     <string>Start Test Set</string>
@@ -307,7 +307,7 @@
   <action name="actionActionCloseLogs">
    <property name="icon">
     <iconset>
-     <normaloff>../data/icons/Wide brush.ico</normaloff>../data/icons/Wide brush.ico</iconset>
+     <normaloff>../data/icons/Wide brush.png</normaloff>../data/icons/Wide brush.png</iconset>
    </property>
    <property name="text">
     <string>Close Logs</string>
@@ -316,7 +316,7 @@
   <action name="actionActionGotoLog">
    <property name="icon">
     <iconset>
-     <normaloff>../data/icons/Script.ico</normaloff>../data/icons/Script.ico</iconset>
+     <normaloff>../data/icons/Script.png</normaloff>../data/icons/Script.png</iconset>
    </property>
    <property name="text">
     <string>Goto Log</string>

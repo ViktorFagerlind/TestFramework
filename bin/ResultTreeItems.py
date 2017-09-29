@@ -62,9 +62,9 @@ class SetTreeItem(NormalTreeItem):
 
   def Icon(self):
     if (self.isSuccess):
-      return QtGui.QIcon("../data/icons/PassedSet.ico")
+      return QtGui.QIcon("../data/icons/PassedSet.png")
     else:
-      return QtGui.QIcon("../data/icons/FailedSet.ico")
+      return QtGui.QIcon("../data/icons/FailedSet.png")
 
 class TestTreeItem(NormalTreeItem):
   def __init__(self, parent, name, isSuccess):
@@ -72,9 +72,9 @@ class TestTreeItem(NormalTreeItem):
 
   def Icon(self):
     if (self.isSuccess):
-      return QtGui.QIcon("../data/icons/PassedTest.ico")
+      return QtGui.QIcon("../data/icons/PassedTest.png")
     else:
-      return QtGui.QIcon("../data/icons/FailedTest.ico")
+      return QtGui.QIcon("../data/icons/FailedTest.png")
 
 class CriteriaTreeItem(NormalTreeItem):
   def __init__(self, parent, name, isSuccess):
@@ -82,9 +82,9 @@ class CriteriaTreeItem(NormalTreeItem):
 
   def Icon(self):
     if (self.isSuccess):
-      return QtGui.QIcon("../data/icons/PassedCriteria.ico")
+      return QtGui.QIcon("../data/icons/PassedCriteria.png")
     else:
-      return QtGui.QIcon("../data/icons/FailedCriteria.ico")
+      return QtGui.QIcon("../data/icons/FailedCriteria.png")
 
 class EvaluationTreeItem(NormalTreeItem):
   def __init__(self, parent, name, isSuccess):
@@ -92,9 +92,9 @@ class EvaluationTreeItem(NormalTreeItem):
 
   def Icon(self):
     if (self.isSuccess):
-      return QtGui.QIcon("../data/icons/Passed.ico")
+      return QtGui.QIcon("../data/icons/Passed.png")
     else:
-      return QtGui.QIcon("../data/icons/Failed.ico")
+      return QtGui.QIcon("../data/icons/Failed.png")
 
 
 class LogTreeItem(BaseTreeItem):
@@ -106,5 +106,5 @@ class LogTreeItem(BaseTreeItem):
     return "Log"
 
   def Icon(self):
-    return QtGui.QIcon("../data/icons/Script.ico")
+    return QtGui.QIcon("../data/icons/Script.png")
 
