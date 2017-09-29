@@ -1,3 +1,4 @@
+*.npp
 *.pyc
 *.rslt
 *.log

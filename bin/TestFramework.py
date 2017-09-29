@@ -17,7 +17,8 @@ class ControlMainWindow (QtGui.QMainWindow):
     self.ui.actionQuit.triggered.connect  (ControlMainWindow.Quit)
 
     # Init log
-    LogManager.setup (self.ui.tabWidgetLog)
+    LogManager.setup (self.ui.tabWidgetLog, 
+                      self.ui.actionActionCloseLogs)
 
     Log.mainLog.put ("Ready!")
     

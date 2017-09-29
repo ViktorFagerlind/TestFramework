@@ -156,10 +156,11 @@ class LogManager:
   tabWidget = None
 
   @staticmethod
-  def setup (tabWidget):
+  def setup (tabWidget, actionCloseLogs):
     LogManager.tabWidget = tabWidget
     LogManager.tabWidget.setTabsClosable (True)
     LogManager.tabWidget.tabCloseRequested.connect (LogManager.closeTab)
+    actionCloseLogs.triggered.connect (LogManager.closeAllTabs)
 
     Log.mainLog = LogManager.addLog ("System", Settings.resultFolder, "System")
 
@@ -172,7 +173,11 @@ class LogManager:
     LogManager.tabWidget.removeTab (currentIndex)
 
   @staticmethod
+  def closeAllTabs ():
+    for i in range(LogManager.tabWidget.count()-1):
+      LogManager.tabWidget.removeTab (1)
 
+  @staticmethod
   def addLog (name, directory, filename):
     listView = QtGui.QListView (LogManager.tabWidget)
     LogManager.tabWidget.addTab (listView, name)
