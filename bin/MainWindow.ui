@@ -277,6 +277,9 @@
    <property name="toolTip">
     <string>Start Test</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
   </action>
   <action name="actionAbort">
    <property name="icon">
@@ -382,6 +385,38 @@
     <hint type="sourcelabel">
      <x>362</x>
      <y>525</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>closeLogsButton</sender>
+   <signal>clicked()</signal>
+   <receiver>actionActionCloseLogs</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>643</x>
+     <y>821</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gotoLogButton</sender>
+   <signal>clicked()</signal>
+   <receiver>actionActionGotoLog</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>57</x>
+     <y>821</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

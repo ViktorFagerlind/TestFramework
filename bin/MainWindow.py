@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Fri Sep 29 14:33:01 2017
-#      by: pyside-uic 0.2.15 running on PySide 1.2.4
+# Created: Mon Oct 02 23:08:03 2017
+#      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -162,6 +162,8 @@ class Ui_MainWindow(object):
         QtCore.QObject.connect(self.startTestButton, QtCore.SIGNAL("clicked()"), self.actionStartTest.trigger)
         QtCore.QObject.connect(self.abortButton, QtCore.SIGNAL("clicked()"), self.actionAbort.trigger)
         QtCore.QObject.connect(self.TreeViewResults, QtCore.SIGNAL("doubleClicked(QModelIndex)"), self.actionTestResultsClicked.trigger)
+        QtCore.QObject.connect(self.closeLogsButton, QtCore.SIGNAL("clicked()"), self.actionActionCloseLogs.trigger)
+        QtCore.QObject.connect(self.gotoLogButton, QtCore.SIGNAL("clicked()"), self.actionActionGotoLog.trigger)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -182,6 +184,7 @@ class Ui_MainWindow(object):
         self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStartTest.setText(QtGui.QApplication.translate("MainWindow", "Start Test", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStartTest.setToolTip(QtGui.QApplication.translate("MainWindow", "Start Test", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionStartTest.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+R", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAbort.setText(QtGui.QApplication.translate("MainWindow", "Abort", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStartSet.setText(QtGui.QApplication.translate("MainWindow", "Start Test Set", None, QtGui.QApplication.UnicodeUTF8))
         self.actionStartSet.setToolTip(QtGui.QApplication.translate("MainWindow", "Start Test", None, QtGui.QApplication.UnicodeUTF8))
