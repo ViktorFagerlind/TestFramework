@@ -1,8 +1,10 @@
 import time
+import sys
 
 from TestManager  import TestConfiguration
-from Logging 		      import Log, LogManager, Settings
-from Results   import TestResult
+from Logging      import Log, LogManager, Settings, StreamToLog
+from Results      import TestResult
+
 
 class Test:
   def __init__ (self, name, instanceName):
@@ -55,10 +57,24 @@ class Test:
 
     self.log = LogManager.addLog (self.fullName (), setResult.getResultPath (), self.timeName)
     self.ongoingResult = TestResult (self.timeName, setResult.getResultPath ())
-    
+
+    normalStdout = sys.stdout
+    normalStderr = sys.stderr
+    sys.stdout   = StreamToLog(self.log, False)
+    sys.stderr   = StreamToLog(self.log, True)
+
+    print ("1 Stdout")
+    print ("1 Stderr", file=sys.stderr)
+
     self.printStart ()
     self.runSequence ()
-    
+
+    sys.stdout = normalStdout
+    sys.stderr = normalStderr
+
+    print ("2 Stdout")
+    print ("2 Stderr", file=sys.stderr)
+
     self.log.mediumHeading (self.name + " done!")
     self.ongoingResult.log (self.log)
 

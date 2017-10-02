@@ -1,5 +1,5 @@
 from Logging  import Log
-from Test import Test
+from Test     import Test
 
 class TestA (Test):
   def __init__ (self, instanceName):
@@ -13,22 +13,22 @@ class TestA (Test):
                         "W is correct",
                         "Power is correct"])
   
-    self.log.put ("Simple check")
+    print ("Simple check")
 
     # Get input parameter values
     f = self.getFloatParameter ("Force")
     s = self.getFloatParameter ("Speed")
     a = self.getFloatParameter ("Acceleration")
 
-    self.log.put ("Force: " + str (f))
-    self.log.put ("Speed: " + str (s))
-    self.log.put ("Acceleration: " + str (a))
-    self.log.put ("Sum: " + str (f + s + a))
+    print ("Force: " + str (f))
+    print ("Speed: " + str (s))
+    print ("Acceleration: " + str (a))
+    print ("Sum: " + str (f + s + a))
     self.log.newline ()
 
     # Read non existent parameter with default value
     falseName = self.getFloatParameter ("What!?", -10)
-    self.log.put ("Default value: " + str (falseName))
+    print ("Default value: " + str (falseName))
 
     self.printSubstep ("File checking")
     self.check ("Check file", "Correct formatting", True)
@@ -45,6 +45,5 @@ class TestA (Test):
     #....
     val = 120
     self.checkEqual ("Power is correct", "W", val, 120)
-        
 
 

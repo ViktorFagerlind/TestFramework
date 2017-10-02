@@ -87,8 +87,6 @@ class Log:
     self.currentFile = None
     self.fileLock.release ()
 
-
-
   def appendLogLine (self, text, bold, color):
     font = QtGui.QFont("Courier New", 9, QtGui.QFont.Light)
     font.setBold (bold)
@@ -184,3 +182,15 @@ class LogManager:
     LogManager.tabWidget.setCurrentWidget (listView)
 
     return Log (listView, directory, filename)
+
+class StreamToLog(object):
+  def __init__(self, log, isErr=False):
+    self.log   = log
+    self.isErr = isErr
+
+  def write(self, buf):
+    for line in buf.rstrip().splitlines():
+      if self.isErr:
+        self.log.putError (line.rstrip())
+      else:
+        self.log.put (line.rstrip())
