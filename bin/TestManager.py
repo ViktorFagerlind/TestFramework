@@ -13,27 +13,34 @@ class TestConfiguration ():
   @staticmethod
   def readConfigurations ():
     xml = ET.parse (Settings.inputPath + "test_configurations.xml")
-    TestCollection.testConfigXmlRoot = xml.getroot ()
+    TestConfiguration.testConfigXmlRoot = xml.getroot ()
 
   @staticmethod
   def getValueString (testName, instanceName, parameterName):
-    param = TestConfiguration.getIntanceRoot (testName, instanceName).find (parameterName)
-    if (param == None):
+    instanceRoot = TestConfiguration.getInstanceRoot (testName, instanceName)
+    if instanceRoot is None:
+      return None
+    param = instanceRoot.find (parameterName)
+    if param is None:
       return None
     return param.text
 
   @staticmethod
-  def getIntances (testName):
+  def getInstances (testName):
     instances = []
-    for t in TestCollection.testConfigXmlRoot.findall("Test"):
+    for t in TestConfiguration.testConfigXmlRoot.findall("Test"):
       if (t.get ("name") == testName):
         for i in t.findall("Instance"):
           instances.append (i.get ("name"))
+      
+    if not instances:
+      instances.append ("Default")
+      
     return instances
 
   @staticmethod
-  def getIntanceRoot (testName, instanceName):
-    for t in TestCollection.testConfigXmlRoot.findall("Test"):
+  def getInstanceRoot (testName, instanceName):
+    for t in TestConfiguration.testConfigXmlRoot.findall("Test"):
       if (t.get ("name") == testName):
         for i in t.findall("Instance"):
           if (i.get ("name") == instanceName):
@@ -48,7 +55,7 @@ class TestCollection ():
   def readTests ():
     TestCollection.tests.clear ()
 
-    # Add tests directory to the path i order to be able to import the test classes
+    # Add tests directory to the path in order to be able to import the test classes
     sys.path.append (Settings.testPath)
     
     fileNames = Settings.getFilenamesFromDir ("*.py", Settings.testPath)
@@ -148,7 +155,7 @@ class TestManager:
     #Add TestCollection All Tests
     allTestsNominal = []
     for tn in TestCollection.getTestNames ():
-      for i in TestConfiguration.getIntances (tn):
+      for i in TestConfiguration.getInstances (tn):
         allTestsNominal.append (TestRun (tn, i))
     self.AddTestSet ("All Tests", allTestsNominal)
 

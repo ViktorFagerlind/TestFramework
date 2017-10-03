@@ -16,19 +16,19 @@ class Test:
 
   def getFloatParameter (self, name, default=0):
     valueString = TestConfiguration.getValueString (self.name, self.instanceName, name)
-    if (valueString == None):
+    if valueString is None:
       return float (default)
     return float (valueString)
 
   def getIntParameter (self, name, default=0):
     valueString = TestConfiguration.getValueString (self.name, self.instanceName, name)
-    if (valueString == None):
+    if valueString is None:
       return int (default)
     return int (valueString)
 
   def getLongParameter (self, name, default=0):
     valueString = TestConfiguration.getValueString (self.name, self.instanceName, name)
-    if (valueString == None):
+    if valueString is None:
       return long (default)
     return long (valueString)
 
@@ -63,17 +63,11 @@ class Test:
     sys.stdout   = StreamToLog(self.log, False)
     sys.stderr   = StreamToLog(self.log, True)
 
-    print ("1 Stdout")
-    print ("1 Stderr", file=sys.stderr)
-
     self.printStart ()
     self.runSequence ()
 
     sys.stdout = normalStdout
     sys.stderr = normalStderr
-
-    print ("2 Stdout")
-    print ("2 Stderr", file=sys.stderr)
 
     self.log.mediumHeading (self.name + " done!")
     self.ongoingResult.log (self.log)
