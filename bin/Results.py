@@ -1,3 +1,4 @@
+import time
 import pickle
 import os
 import sys
@@ -71,14 +72,14 @@ class SetResult:
     self.name         = name
     self.testResults  = []
 
-  def getResultPath (self):
+  def getResultDir (self):
     return Settings.resultFolder + self.name + "/"
     
   def addTestResult (self, testResult):
-    testResult.saveToFile (self.getResultPath ())
+    testResult.saveToFile (self.getResultDir ())
     self.appendTestResult (testResult)
     TestResultManager.refreshGui ()
-
+    
   def appendTestResult (self, testResult):
     self.testResults.append (testResult)
 
@@ -89,10 +90,10 @@ class SetResult:
     return True
 
 class TestResult:
-  def __init__ (self, name, resultPath):
+  def __init__ (self, name):
     self.name       = name
     self.criteria   = []
-    self.resultPath = resultPath
+    self.startTime  = time.time ()
 
   def initCriteria (self, criteriaNames):
     for cn in criteriaNames:
@@ -127,7 +128,7 @@ class TestResult:
     file.close()
     return ret
   
-  def addEvaluation (self, criteriaName, text, success, time, log):
+  def addEvaluation (self, criteriaName, text, success, log):
     criteria = None
     for c in self.criteria:
       if (c.name == criteriaName):
@@ -138,7 +139,7 @@ class TestResult:
       criteria = Criteria (criteriaName)
       self.criteria.append (criteria)
       
-    criteria.evaluate (text, success, time, log)
+    criteria.evaluate (text, success, time.time () - self.startTime, log)
 
   def isSuccess (self):
     for c in self.criteria:

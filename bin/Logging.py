@@ -2,7 +2,8 @@ import os
 import sys
 import glob
 import datetime
-import threading
+#import threading
+import logging
 
 from PySide import QtGui
 
@@ -49,71 +50,72 @@ class Log:
 
   mainLog = None
 
-  def __init__ (self, listView, directory, filename):
-    self.listView = listView
-    self.modelLog = QtGui.QStandardItemModel (self.listView)
-    self.listView.setModel (self.modelLog)
-    self.directory = directory
-
-    self.fileLock = threading.Lock ()
-    self.currentFile = None
-    self.__startFileLogging__ (filename)
-
-  def __del__(self):
-    self.__stopFileLogging__ ()
-
-  def __startFileLogging__ (self, filename):
-    self.fileLock.acquire ()
-    
-    if (not os.path.isdir (self.directory)):
-      os.makedirs (self.directory)
-    
-    filepath = self.directory + filename + ".log"
-    
-    if (self.currentFile != None):
-      Log.mainLog.putError ("Failed to open " + filepath + "- log file already open")
-    else: 
-      try:
-        self.currentFile = open (filepath,'w')     
-      except:
-        Log.mainLog.putError ("Failed to open " + filepath)
-        self.currentFile = None
-    
-    self.fileLock.release ()
+  def __init__ (self, logger):
+    self.logger = logger
   
-  def __stopFileLogging__ (self):
-    self.fileLock.acquire ()
-    self.currentFile.close ()
-    self.currentFile = None
-    self.fileLock.release ()
-
-  def appendLogLine (self, text, bold, color):
-    font = QtGui.QFont("Courier New", 9, QtGui.QFont.Light)
-    font.setBold (bold)
-
-    item = QtGui.QStandardItem (text)
-    item.setFont (font)
-    item.setForeground (QtGui.QColor(color))
-
-    self.modelLog.appendRow (item)
+#    self.directory = directory
+#    self.fileLock = threading.Lock ()
+#    self.currentFile = None
+#    self.__startFileLogging__ (filename)
+#
+#  def __del__(self):
+#    self.__stopFileLogging__ ()
+#
+#  def __startFileLogging__ (self, filename):
+#    self.fileLock.acquire ()
+#    
+#    if (not os.path.isdir (self.directory)):
+#      os.makedirs (self.directory)
+#    
+#    filepath = self.directory + filename + ".log"
+#    
+#    if (self.currentFile != None):
+#      Log.mainLog.putError ("Failed to open " + filepath + "- log file already open")
+#    else: 
+#      try:
+#        self.currentFile = open (filepath,'w')     
+#      except:
+#        Log.mainLog.putError ("Failed to open " + filepath)
+#        self.currentFile = None
+#    
+#    self.fileLock.release ()
+#  
+#  def __stopFileLogging__ (self):
+#    self.fileLock.acquire ()
+#    self.currentFile.close ()
+#    self.currentFile = None
+#    self.fileLock.release ()
+#
+#  def appendLogLine (self, text, bold, color):
+#    font = QtGui.QFont("Courier New", 9, QtGui.QFont.Light)
+#    font.setBold (bold)
+#
+#    item = QtGui.QStandardItem (text)
+#    item.setFont (font)
+#    item.setForeground (QtGui.QColor(color))
+#
+#    self.modelLog.appendRow (item)
 
   def newline (self):
-    self.put ("", False, "black", False)
+    self.put ("\n", False, "black")
 
+  # TODO
   def putSuccessFail (self, text, success):
     self.put (text, True, "green" if success else "red")
 
   def putError (self, text):
     self.put (text, False, "red")
 
-  def put (self, text, bold = False, color = "black", timeStamp = True):
-    text = (("[" + Settings.getSmallNowString () + "] ") if timeStamp else "") + text
-    self.appendLogLine (text, bold, color)
+  def put (self, text, bold = False, color = "black"):
+    self.logger.info (text)
+  
+#    text = (("[" + Settings.getSmallNowString () + "] ") if timeStamp else "") + text
+#    self.appendLogLine (text, bold, color)
 
-    self.fileLock.acquire ()
-    if (self.currentFile != None):
-      self.currentFile.write (text + "\n")
-    self.fileLock.release ()
+#    self.fileLock.acquire ()
+#    if (self.currentFile != None):
+#      self.currentFile.write (text + "\n")
+#    self.fileLock.release ()
 
   def largeHeading (self, name):
     self.lineHeading ("", self.lineLength)
@@ -160,7 +162,7 @@ class LogManager:
     LogManager.tabWidget.tabCloseRequested.connect (LogManager.closeTab)
     actionCloseLogs.triggered.connect (LogManager.closeAllTabs)
 
-    Log.mainLog = LogManager.addLog ("System", Settings.resultFolder, "System")
+    Log.mainLog = LogManager.addGuiLog ("System", Settings.resultFolder, "System")
 
   @staticmethod
   def closeTab (currentIndex):
@@ -176,21 +178,66 @@ class LogManager:
       LogManager.tabWidget.removeTab (1)
 
   @staticmethod
-  def addLog (name, directory, filename):
+  def addGuiLog (name, directory, filename):
+    logging.basicConfig (level=logging.DEBUG)
+    
     listView = QtGui.QListView (LogManager.tabWidget)
     LogManager.tabWidget.addTab (listView, name)
     LogManager.tabWidget.setCurrentWidget (listView)
+    
+    listViewHandler = ListViewLogger (listView)
+    listViewHandler.setFormatter (logging.Formatter ('%(asctime))-15s: %(message)s'))
+    
+    fileHandler = logging.FileHandler (directory + filename + ".log")
+    fileHandler.setLevel (logging.DEBUG)
+    fileHandler.setFormatter (logging.Formatter ('%(asctime))-15s: %(message)s'))
+    
+    logger = logging.getLogger ("")
+    logger.addHandler (listViewHandler)    
+    logger.addHandler (fileHandler)    
+    
+    return Log (logger)
+  
+  @staticmethod
+  def getStandaloneLog (name):
+    logging.basicConfig (level=logging.INFO, format='%(message)s')
+  
+    logger = logging.getLogger ("")
+    logger.info ('Test logger debug')
+    logger.info ('Test logger info')
+    logger.warn ('Test logger warn')
+    
+    return Log (logger)
 
-    return Log (listView, directory, filename)
+class ListViewLogger (logging.Handler):
+  def __init__(self, parent, listView):
+    super().__init__()
+    
+    self.listView = listView
+    self.modelLog = QtGui.QStandardItemModel (self.listView)
+    self.listView.setModel (self.modelLog)
+    
+    self.font = QtGui.QFont("Courier New", 9, QtGui.QFont.Light)
+    #self.font.setBold (bold)
+    
+  def emit(self, record):
+    line = self.format(record)
+    item = QtGui.QStandardItem (line)
+    item.setFont (font)
+    #item.setForeground (QtGui.QColor(color))
+    self.modelLog.appendRow (item)
 
-class StreamToLog(object):
-  def __init__(self, log, isErr=False):
-    self.log   = log
-    self.isErr = isErr
+  def write(self, m):
+      pass
 
-  def write(self, buf):
-    for line in buf.rstrip().splitlines():
-      if self.isErr:
-        self.log.putError (line.rstrip())
-      else:
-        self.log.put (line.rstrip())
+#class StreamToLog(object):
+#  def __init__(self, log, isErr=False):
+#    self.log   = log
+#    self.isErr = isErr
+#    
+#  def write(self, buf):
+#    for line in buf.rstrip().splitlines():
+#      if self.isErr:
+#        self.log.putError (line.rstrip())
+#      else:
+#        self.log.put (line.rstrip())

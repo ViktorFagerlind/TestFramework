@@ -1,8 +1,7 @@
-import time
 import sys
 
 from TestManager  import TestConfiguration
-from Logging      import Log, LogManager, Settings, StreamToLog
+from Logging      import Log, LogManager, Settings
 from Results      import TestResult
 
 
@@ -39,37 +38,37 @@ class Test:
     self.ongoingResult.initCriteria (criteriaNames)
   
   def check (self, criteriaName, text, success):
-    self.ongoingResult.addEvaluation (criteriaName, text, success, time.time () - self.startTime, self.log)
+    self.ongoingResult.addEvaluation (criteriaName, text, success, self.log)
 
   def printStart (self):
-    self.log.largeHeading (self.timeName)
+    self.log.largeHeading (self.fullName ())
     self.log.newline ()
 
   def printSubstep (self, name):
     self.log.newline ()
     self.log.mediumHeading (name)
 
-  def run (self, setResult):
-    Log.mainLog.put ("Starting test: " + self.fullName ())
-
-    self.startTime = time.time ()
-    self.timeName = self.fullName () + " - " + Settings.getNowString ()
-
-    self.log = LogManager.addLog (self.fullName (), setResult.getResultPath (), self.timeName)
-    self.ongoingResult = TestResult (self.timeName, setResult.getResultPath ())
-
-    normalStdout = sys.stdout
-    normalStderr = sys.stderr
-    sys.stdout   = StreamToLog(self.log, False)
-    sys.stderr   = StreamToLog(self.log, True)
-
+  def runInGui (self, logDir):
+    timeName = self.fullName () + " - " + Settings.getNowString ()
+    log = LogManager.addGuiLog (self.fullName (), logDir, timeName)
+    return self.__run (log, timeName)
+    
+  def runStandalone (self):
+    timeName = self.fullName () + " - " + Settings.getNowString ()
+    log = LogManager.getStandaloneLog (self.fullName ())
+    return self.__run (log, timeName)
+    
+  def __run (self, log, timeName):
+    self.log = log
+  
+    self.ongoingResult = TestResult (timeName)
+    
     self.printStart ()
+    
     self.runSequence ()
 
-    sys.stdout = normalStdout
-    sys.stderr = normalStderr
-
-    self.log.mediumHeading (self.name + " done!")
+    self.printSubstep (self.name + " done!")
+    
     self.ongoingResult.log (self.log)
-
-    setResult.addTestResult (self.ongoingResult)
+    
+    return self.ongoingResult

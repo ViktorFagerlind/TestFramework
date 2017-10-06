@@ -40,6 +40,8 @@ class TestConfiguration ():
 
   @staticmethod
   def getInstanceRoot (testName, instanceName):
+    if TestConfiguration.testConfigXmlRoot is None:
+      return None
     for t in TestConfiguration.testConfigXmlRoot.findall("Test"):
       if (t.get ("name") == testName):
         for i in t.findall("Instance"):
@@ -84,7 +86,12 @@ class TestCollection ():
   def runTest (testRun, testResultSet):
     testClass = TestCollection.getTestClass (testRun.testName)
     testInstance = testClass (testRun.instanceName)
-    testInstance.run (testResultSet)
+    
+    Log.mainLog.put ("Starting test: " + testInstance.fullName ())
+
+    testResult = testInstance.runInGui (testResultSet.getResultDir ())
+    
+    testResultSet.addTestResult (testResult)
 
 # ---- TestRun ---------------------------------------------------------------------------------------------------------
 
