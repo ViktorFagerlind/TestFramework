@@ -37,7 +37,7 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
       for tr in sorted (sr.testResults, key=operator.attrgetter("name")):
         tri = TestTreeItem (sri, tr.name, tr.isSuccess ())
         sri.AddChild (tri)
-        li = LogTreeItem (tri, tr.resultPath + tr.name + ".log")
+        li = LogTreeItem (tri, sr.getResultDir () + tr.name + ".log")
         tri.AddChild (li)
         for c in sorted (tr.criteria, key=operator.attrgetter("name")):
           ci = CriteriaTreeItem (tri, c.name, c.isSuccess ())

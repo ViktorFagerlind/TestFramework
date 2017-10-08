@@ -97,7 +97,7 @@ class Log:
 #    self.modelLog.appendRow (item)
 
   def newline (self):
-    self.put ("\n", False, "black")
+    self.put ("", False, "black")
 
   # TODO
   def putSuccessFail (self, text, success):
@@ -186,31 +186,31 @@ class LogManager:
     LogManager.tabWidget.setCurrentWidget (listView)
     
     listViewHandler = ListViewLogger (listView)
-    listViewHandler.setFormatter (logging.Formatter ('%(asctime))-15s: %(message)s'))
-    
+    listViewHandler.setLevel (logging.INFO)
+    listViewHandler.setFormatter (logging.Formatter('[%(asctime)s.%(msecs)03d] %(message)s', '%H:%M:%S'))
+
+    if not os.path.exists(directory):
+      os.makedirs(directory)
     fileHandler = logging.FileHandler (directory + filename + ".log")
     fileHandler.setLevel (logging.DEBUG)
-    fileHandler.setFormatter (logging.Formatter ('%(asctime))-15s: %(message)s'))
+    fileHandler.setFormatter (logging.Formatter('[%(asctime)s.%(msecs)03d] %(levelname)-8s %(message)s', '%Y-%m-%d %H:%M:%S'))
     
     logger = logging.getLogger ("")
-    logger.addHandler (listViewHandler)    
+    logger.addHandler (listViewHandler)
     logger.addHandler (fileHandler)    
     
     return Log (logger)
   
   @staticmethod
   def getStandaloneLog (name):
-    logging.basicConfig (level=logging.INFO, format='%(message)s')
+    logging.basicConfig (level=logging.DEBUG, format='%(message)s')
   
     logger = logging.getLogger ("")
-    logger.info ('Test logger debug')
-    logger.info ('Test logger info')
-    logger.warn ('Test logger warn')
-    
+
     return Log (logger)
 
 class ListViewLogger (logging.Handler):
-  def __init__(self, parent, listView):
+  def __init__(self, listView):
     super().__init__()
     
     self.listView = listView
@@ -223,7 +223,7 @@ class ListViewLogger (logging.Handler):
   def emit(self, record):
     line = self.format(record)
     item = QtGui.QStandardItem (line)
-    item.setFont (font)
+    item.setFont (self.font)
     #item.setForeground (QtGui.QColor(color))
     self.modelLog.appendRow (item)
 
