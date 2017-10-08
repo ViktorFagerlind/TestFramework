@@ -18,11 +18,11 @@ class TestPrint (Test):
 
     print ("Printing")
     self.log.put     ('Put logging')
-    logging.debug    ('Debug logging')
-    logging.info     ('Info logging')
-    logging.warning  ('Warning logging')
-    logging.error    ('Error logging')
-    logging.critical ('Critical logging')
+    self.logger.debug    ('Debug logging')
+    self.logger.info     ('Info logging')
+    self.logger.warning  ('Warning logging')
+    self.logger.error    ('Error logging')
+    self.logger.critical ('Critical logging')
 
 
 if __name__ == '__main__':

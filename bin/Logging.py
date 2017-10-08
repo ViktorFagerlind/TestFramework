@@ -52,49 +52,6 @@ class Log:
 
   def __init__ (self, logger):
     self.logger = logger
-  
-#    self.directory = directory
-#    self.fileLock = threading.Lock ()
-#    self.currentFile = None
-#    self.__startFileLogging__ (filename)
-#
-#  def __del__(self):
-#    self.__stopFileLogging__ ()
-#
-#  def __startFileLogging__ (self, filename):
-#    self.fileLock.acquire ()
-#    
-#    if (not os.path.isdir (self.directory)):
-#      os.makedirs (self.directory)
-#    
-#    filepath = self.directory + filename + ".log"
-#    
-#    if (self.currentFile != None):
-#      Log.mainLog.putError ("Failed to open " + filepath + "- log file already open")
-#    else: 
-#      try:
-#        self.currentFile = open (filepath,'w')     
-#      except:
-#        Log.mainLog.putError ("Failed to open " + filepath)
-#        self.currentFile = None
-#    
-#    self.fileLock.release ()
-#  
-#  def __stopFileLogging__ (self):
-#    self.fileLock.acquire ()
-#    self.currentFile.close ()
-#    self.currentFile = None
-#    self.fileLock.release ()
-#
-#  def appendLogLine (self, text, bold, color):
-#    font = QtGui.QFont("Courier New", 9, QtGui.QFont.Light)
-#    font.setBold (bold)
-#
-#    item = QtGui.QStandardItem (text)
-#    item.setFont (font)
-#    item.setForeground (QtGui.QColor(color))
-#
-#    self.modelLog.appendRow (item)
 
   def newline (self):
     self.put ("", False, "black")
@@ -108,14 +65,6 @@ class Log:
 
   def put (self, text, bold = False, color = "black"):
     self.logger.info (text)
-  
-#    text = (("[" + Settings.getSmallNowString () + "] ") if timeStamp else "") + text
-#    self.appendLogLine (text, bold, color)
-
-#    self.fileLock.acquire ()
-#    if (self.currentFile != None):
-#      self.currentFile.write (text + "\n")
-#    self.fileLock.release ()
 
   def largeHeading (self, name):
     self.lineHeading ("", self.lineLength)
@@ -162,7 +111,10 @@ class LogManager:
     LogManager.tabWidget.tabCloseRequested.connect (LogManager.closeTab)
     actionCloseLogs.triggered.connect (LogManager.closeAllTabs)
 
-    Log.mainLog = LogManager.addGuiLog ("System", Settings.resultFolder, "System")
+    logging.getLogger().setLevel(logging.DEBUG)
+
+
+    Log.mainLog = LogManager.addLog ("System", Settings.resultFolder, "System")
 
   @staticmethod
   def closeTab (currentIndex):
@@ -178,9 +130,8 @@ class LogManager:
       LogManager.tabWidget.removeTab (1)
 
   @staticmethod
-  def addGuiLog (name, directory, filename):
-    logging.basicConfig (level=logging.DEBUG)
-    
+  def addLog (name, directory, filename):
+
     listView = QtGui.QListView (LogManager.tabWidget)
     LogManager.tabWidget.addTab (listView, name)
     LogManager.tabWidget.setCurrentWidget (listView)
@@ -195,9 +146,11 @@ class LogManager:
     fileHandler.setLevel (logging.DEBUG)
     fileHandler.setFormatter (logging.Formatter('[%(asctime)s.%(msecs)03d] %(levelname)-8s %(message)s', '%Y-%m-%d %H:%M:%S'))
     
-    logger = logging.getLogger ("")
+    logger = logging.getLogger (name)
     logger.addHandler (listViewHandler)
-    logger.addHandler (fileHandler)    
+    logger.addHandler (fileHandler)
+
+    logger.propagate = False
     
     return Log (logger)
   
@@ -205,9 +158,7 @@ class LogManager:
   def getStandaloneLog (name):
     logging.basicConfig (level=logging.DEBUG, format='%(message)s')
   
-    logger = logging.getLogger ("")
-
-    return Log (logger)
+    return Log (logging.getLogger ())
 
 class ListViewLogger (logging.Handler):
   def __init__(self, listView):
@@ -230,14 +181,14 @@ class ListViewLogger (logging.Handler):
   def write(self, m):
       pass
 
-#class StreamToLog(object):
-#  def __init__(self, log, isErr=False):
-#    self.log   = log
-#    self.isErr = isErr
-#    
-#  def write(self, buf):
-#    for line in buf.rstrip().splitlines():
-#      if self.isErr:
-#        self.log.putError (line.rstrip())
-#      else:
-#        self.log.put (line.rstrip())
+class StreamToLog(object):
+  def __init__(self, log, isErr=False):
+    self.log   = log
+    self.isErr = isErr
+
+  def write(self, buf):
+    for line in buf.rstrip().splitlines():
+      if self.isErr:
+        self.log.putError (line.rstrip())
+      else:
+        self.log.put (line.rstrip())

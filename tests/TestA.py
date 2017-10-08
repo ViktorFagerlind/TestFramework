@@ -1,3 +1,5 @@
+import logging
+
 from Logging  import Log
 from Test     import Test
 
@@ -13,22 +15,22 @@ class TestA (Test):
                         "W is correct",
                         "Power is correct"])
   
-    print ("Simple check")
+    self.logger.info ("Simple check")
 
     # Get input parameter values
     f = self.getFloatParameter ("Force")
     s = self.getFloatParameter ("Speed")
     a = self.getFloatParameter ("Acceleration")
 
-    print ("Force: " + str (f))
-    print ("Speed: " + str (s))
-    print ("Acceleration: " + str (a))
-    print ("Sum: " + str (f + s + a))
+    self.logger.info ("Force: " + str (f))
+    self.logger.info ("Speed: " + str (s))
+    self.logger.info ("Acceleration: " + str (a))
+    self.logger.info ("Sum: " + str (f + s + a))
     self.log.newline ()
 
     # Read non existent parameter with default value
     falseName = self.getFloatParameter ("What!?", -10)
-    print ("Default value: " + str (falseName))
+    self.logger.info ("Default value: " + str (falseName))
 
     self.printSubstep ("File checking")
     self.check ("Check file", "Correct formatting", True)

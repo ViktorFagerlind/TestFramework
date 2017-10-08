@@ -50,7 +50,7 @@ class Test:
 
   def runInGui (self, logDir):
     timeName = self.fullName () + " - " + Settings.getNowString ()
-    log = LogManager.addGuiLog (self.fullName (), logDir, timeName)
+    log = LogManager.addLog (self.fullName (), logDir, timeName)
     return self.__run (log, timeName)
     
   def runStandalone (self):
@@ -59,7 +59,8 @@ class Test:
     return self.__run (log, timeName)
     
   def __run (self, log, timeName):
-    self.log = log
+    self.log    = log
+    self.logger = log.logger
   
     self.ongoingResult = TestResult (timeName)
     
