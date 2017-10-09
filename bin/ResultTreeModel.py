@@ -149,7 +149,7 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
     parent_item = index.internalPointer()
 
     if (index.column() != 0):
-      Log.mainLog.putError ("Only support for one column at the moment");
+      Log.mainLog.error ("Only support for one column at the moment");
       return None
     
     # Return the data associated with the column

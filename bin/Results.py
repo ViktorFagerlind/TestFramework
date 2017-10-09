@@ -109,20 +109,20 @@ class TestResult:
       pickle.dump (self, file)
       file.close()
     except:
-      Log.mainLog.putError ("Failed to save " + filepath)
+      Log.mainLog.error ("Failed to save " + filepath)
 
   @staticmethod
   def loadFromFile (filepath):
     try:
       file = open (filepath,'rb') 
     except:
-      Log.mainLog.putError ("Failed to load " + filepath + ": " + str (sys.exc_info()[0]))
+      Log.mainLog.error ("Failed to load " + filepath + ": " + str (sys.exc_info()[0]))
       return None
       
     try:
       ret = pickle.load (file)
     except:
-      Log.mainLog.putError ("Failed to unpickle " + filepath + ": " + str (sys.exc_info()[0]))
+      Log.mainLog.error ("Failed to unpickle " + filepath + ": " + str (sys.exc_info()[0]))
       ret = None
       
     file.close()

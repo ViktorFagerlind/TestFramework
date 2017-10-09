@@ -130,7 +130,7 @@ class LogManager:
   @staticmethod
   def closeTab (currentIndex):
     if (currentIndex == 0):
-      Log.mainLog.putError ("Cannot close the system log")
+      Log.mainLog.warning ("Cannot close the system log")
       return
 
     LogManager.tabWidget.removeTab (currentIndex)
@@ -215,6 +215,6 @@ class StreamToLog(object):
   def write(self, buf):
     for line in buf.rstrip().splitlines():
       if self.isErr:
-        self.log.putError (line.rstrip())
+        self.log.error (line.rstrip())
       else:
         self.log.info (line.rstrip())
