@@ -2,9 +2,9 @@ import time
 import pickle
 import os
 import sys
+import logging
 
-from Logging import Log
-from Logging import Settings
+from Logging import *
 
 class TestResultManager:
   singleRunSet = None
@@ -155,7 +155,7 @@ class TestResult:
 
     success = self.isSuccess ()
     log.newline ()
-    log.putSuccessFail ("Total test result: " + Log.getSuccessFailed (success), success)
+    log.successOrFail ("Total test result: " + Log.getSuccessFailed (success), success)
 
 class Criteria:
   def __init__ (self, name):
@@ -167,7 +167,7 @@ class Criteria:
     self.evaluations.append (CriteriaEval (time, text, success))
     
     log.smallHeading ("Criteria: " + self.name)
-    log.putSuccessFail (text + ": " + Log.getSuccessFailed (success), success)
+    log.successOrFail (text + ": " + Log.getSuccessFailed (success), success)
     log.newline ()
             
   def getResult (self):
@@ -190,10 +190,11 @@ class Criteria:
     return True;
 
   def printResult (self, log):
-    color = "orange" if not self.isEvaluated () else ("green" if self.isSuccess () else "red")
-    log.put (Log.extend (self.name + ": ", 30, " ") + self.getResult (), True, color)
+    logFunction = log.warning if not self.isEvaluated () else (log.success if self.isSuccess () else log.error)
+
+    logFunction (Log.extend (self.name + ": ", 30, " ") + self.getResult ())
     for e in self.evaluations:
-      log.putSuccessFail (Log.extend ("  " + e.text, 30, " ") + Log.getSuccessFailed (e.success) + " (%.1f" % (e.time * 1000) + "ms)", e.success)
+      log.successOrFail (Log.extend ("  " + e.text, 30, " ") + Log.getSuccessFailed (e.success) + " (%.1f" % (e.time * 1000) + "ms)", e.success)
       
     log.newline ()
       

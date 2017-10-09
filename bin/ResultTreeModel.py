@@ -20,7 +20,7 @@ class ResultTreeModel(QtCore.QAbstractItemModel):
 
     if (isinstance(i, LogTreeItem)):
       absLogPath = os.path.abspath (i.filePath)
-      Log.mainLog.put ("opening " + absLogPath + "...")
+      Log.mainLog.info ("opening " + absLogPath + "...")
       if sys.platform.startswith('darwin'):
         subprocess.call(('open', absLogPath))
       elif os.name == 'nt':

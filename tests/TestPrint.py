@@ -17,12 +17,13 @@ class TestPrint (Test):
     self.printSubstep ("Running Print test")
 
     print ("Printing")
-    self.log.put     ('Put logging')
-    self.logger.debug    ('Debug logging')
-    self.logger.info     ('Info logging')
-    self.logger.warning  ('Warning logging')
-    self.logger.error    ('Error logging')
-    self.logger.critical ('Critical logging')
+
+    self.log.debug    ('Debug logging')
+    self.log.info     ('Info logging')
+    self.log.success  ('Success logging')
+    self.log.warning  ('Warning logging')
+    self.log.error    ('Error logging')
+    self.log.critical ('Critical logging')
 
 
 if __name__ == '__main__':

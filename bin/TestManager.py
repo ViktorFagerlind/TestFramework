@@ -87,7 +87,7 @@ class TestCollection ():
     testClass = TestCollection.getTestClass (testRun.testName)
     testInstance = testClass (testRun.instanceName)
     
-    Log.mainLog.put ("Starting test: " + testInstance.fullName ())
+    Log.mainLog.info ("Starting test: " + testInstance.fullName ())
 
     testResult = testInstance.runInGui (testResultSet.getResultDir ())
     
@@ -126,7 +126,7 @@ class TestSet ():
       self.modelTests.appendRow (item)
 
   def Start (self):
-    Log.mainLog.put ("Start set: " + self.name)
+    Log.mainLog.info ("Start set: " + self.name)
 
     setResult = SetResult (self.name + " - " + Settings.getNowString ())
   
@@ -138,7 +138,7 @@ class TestSet ():
   def StartSingleTest (self):
     selectedItems = self.listView.selectedIndexes ()
     if (len (selectedItems) != 1):
-      Log.mainLog.put ("No test selected!")
+      Log.mainLog.warning ("No test selected!")
       return
     TestCollection.runTest (self.testRuns[selectedItems[0].row ()], TestResultManager.singleRunSet)
 
@@ -192,4 +192,4 @@ class TestManager:
 
   @staticmethod
   def Abort ():
-    Log.mainLog.put ("Abort")
+    Log.mainLog.warning ("Abort")

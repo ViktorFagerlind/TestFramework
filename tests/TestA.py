@@ -15,22 +15,22 @@ class TestA (Test):
                         "W is correct",
                         "Power is correct"])
   
-    self.logger.info ("Simple check")
+    self.log.info ("Simple check")
 
     # Get input parameter values
     f = self.getFloatParameter ("Force")
     s = self.getFloatParameter ("Speed")
     a = self.getFloatParameter ("Acceleration")
 
-    self.logger.info ("Force: " + str (f))
-    self.logger.info ("Speed: " + str (s))
-    self.logger.info ("Acceleration: " + str (a))
-    self.logger.info ("Sum: " + str (f + s + a))
+    self.log.info ("Force: " + str (f))
+    self.log.info ("Speed: " + str (s))
+    self.log.info ("Acceleration: " + str (a))
+    self.log.info ("Sum: " + str (f + s + a))
     self.log.newline ()
 
     # Read non existent parameter with default value
     falseName = self.getFloatParameter ("What!?", -10)
-    self.logger.info ("Default value: " + str (falseName))
+    self.log.info ("Default value: " + str (falseName))
 
     self.printSubstep ("File checking")
     self.check ("Check file", "Correct formatting", True)

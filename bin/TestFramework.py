@@ -20,7 +20,7 @@ class ControlMainWindow (QtGui.QMainWindow):
     LogManager.setup (self.ui.tabWidgetLog, 
                       self.ui.actionActionCloseLogs)
 
-    Log.mainLog.put ("Ready!")
+    Log.mainLog.info ("Ready!")
     
     # Init TestManager
     self.TestManager = TestManager (self.ui.tabWidgetTest,

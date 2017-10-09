@@ -2,10 +2,17 @@ import os
 import sys
 import glob
 import datetime
-#import threading
 import logging
 
 from PySide import QtGui
+
+loglevel_SUCCESS = logging.WARNING - 1
+
+logging.addLevelName (loglevel_SUCCESS, "SUCCESS")
+def logSuccess(self, message, *args, **kws):
+    self._log(loglevel_SUCCESS, message, args, **kws)
+
+logging.Logger.success = logSuccess
 
 class Settings:
   resultFolder = "../results/"
@@ -51,20 +58,24 @@ class Log:
   mainLog = None
 
   def __init__ (self, logger):
-    self.logger = logger
+    self.logger   = logger
+
+    self.debug    = logger.debug
+    self.info     = logger.info
+    self.success  = logger.success
+    self.warning  = logger.warning
+    self.error    = logger.error
+    self.critical = logger.critical
 
   def newline (self):
-    self.put ("", False, "black")
+    self.info ("")
 
   # TODO
-  def putSuccessFail (self, text, success):
-    self.put (text, True, "green" if success else "red")
-
-  def putError (self, text):
-    self.put (text, False, "red")
-
-  def put (self, text, bold = False, color = "black"):
-    self.logger.info (text)
+  def successOrFail (self, text, success):
+    if success:
+      self.success(text)
+    else:
+      self.error(text)
 
   def largeHeading (self, name):
     self.lineHeading ("", self.lineLength)
@@ -85,7 +96,7 @@ class Log:
     else:
       line += self.extend ("", length - len (line), self.filler)
         
-    self.put (line, False)
+    self.info (line)
 
   @staticmethod
   def getSuccessFailed (isSuccess):
@@ -136,7 +147,7 @@ class LogManager:
     LogManager.tabWidget.addTab (listView, name)
     LogManager.tabWidget.setCurrentWidget (listView)
     
-    listViewHandler = ListViewLogger (listView)
+    listViewHandler = ListViewHandler (listView)
     listViewHandler.setLevel (logging.INFO)
     listViewHandler.setFormatter (logging.Formatter('[%(asctime)s.%(msecs)03d] %(message)s', '%H:%M:%S'))
 
@@ -156,11 +167,15 @@ class LogManager:
   
   @staticmethod
   def getStandaloneLog (name):
-    logging.basicConfig (level=logging.DEBUG, format='%(message)s')
-  
+    streamHandler = logging.StreamHandler ()
+    streamHandler.setLevel (logging.DEBUG)
+    streamHandler.setFormatter (logging.Formatter('[%(asctime)s.%(msecs)03d] %(message)s', '%H:%M:%S'))
+
+    logging.basicConfig (level=logging.DEBUG, handlers=[streamHandler])
+
     return Log (logging.getLogger ())
 
-class ListViewLogger (logging.Handler):
+class ListViewHandler (logging.Handler):
   def __init__(self, listView):
     super().__init__()
     
@@ -169,13 +184,24 @@ class ListViewLogger (logging.Handler):
     self.listView.setModel (self.modelLog)
     
     self.font = QtGui.QFont("Courier New", 9, QtGui.QFont.Light)
-    #self.font.setBold (bold)
-    
+
   def emit(self, record):
     line = self.format(record)
+
     item = QtGui.QStandardItem (line)
+
+    if record.levelno == logging.DEBUG or record.levelno == logging.INFO:
+      item.setForeground(QtGui.QColor("black"))
+    elif record.levelno == loglevel_SUCCESS:
+      item.setForeground(QtGui.QColor("green"))
+    elif record.levelno == logging.WARNING:
+      item.setForeground(QtGui.QColor("orange"))
+    elif record.levelno == logging.ERROR or record.levelno == logging.CRITICAL:
+      item.setForeground(QtGui.QColor("red"))
+
+    self.font.setBold (record.levelno == logging.CRITICAL)
+
     item.setFont (self.font)
-    #item.setForeground (QtGui.QColor(color))
     self.modelLog.appendRow (item)
 
   def write(self, m):
@@ -191,4 +217,4 @@ class StreamToLog(object):
       if self.isErr:
         self.log.putError (line.rstrip())
       else:
-        self.log.put (line.rstrip())
+        self.log.info (line.rstrip())

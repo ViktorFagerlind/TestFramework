@@ -1,7 +1,7 @@
 import sys
 
 from TestManager  import TestConfiguration
-from Logging      import Log, LogManager, Settings
+from Logging      import Log, LogManager, Settings, StreamToLog
 from Results      import TestResult
 
 
@@ -60,13 +60,17 @@ class Test:
     
   def __run (self, log, timeName):
     self.log    = log
-    self.logger = log.logger
-  
+
     self.ongoingResult = TestResult (timeName)
     
     self.printStart ()
-    
+
+    saved_stdout = sys.stdout
+    sys.stdout = StreamToLog (self.log, False)
+
     self.runSequence ()
+
+    sys.stdout = saved_stdout
 
     self.printSubstep (self.name + " done!")
     

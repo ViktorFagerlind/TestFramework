@@ -10,9 +10,9 @@ class TestB (Test):
     Test.__init__(self, "Test B", instanceName)
            
   def runSequence (self):
-    self.logger.info('Started')
-    self.logger.warning('Running...')
-    self.logger.info('Stopped')
+    self.log.info ('Started')
+    self.log.info ('Running...')
+    self.log.info ('Stopped')
 
 
 if __name__ == '__main__':
